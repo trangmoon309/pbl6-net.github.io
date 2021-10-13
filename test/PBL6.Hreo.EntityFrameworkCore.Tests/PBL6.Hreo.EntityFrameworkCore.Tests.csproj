@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>PBL6.Hreo</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.*" />
+    <ProjectReference Include="..\..\src\PBL6.Hreo.EntityFrameworkCore\PBL6.Hreo.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\PBL6.Hreo.TestBase\PBL6.Hreo.TestBase.csproj" />
+    <PackageReference Include="Volo.Abp.EntityFrameworkCore.Sqlite" Version="4.4.3" />
+  </ItemGroup>
+
+</Project>

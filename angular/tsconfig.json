@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.prod.json",
+  "compilerOptions": {
+    "paths": {
+      "@p-bL6/hreo": [
+        "projects/hreo/src/public-api.ts"
+      ],
+      "@p-bL6/hreo/config": [
+        "projects/hreo/config/src/public-api.ts"
+      ],
+      "@proxy": ["projects/hreo/src/lib/proxy/index.ts"],
+      "@proxy/*": ["projects/hreo/src/lib/proxy/*"]
+    }
+  }
+}
