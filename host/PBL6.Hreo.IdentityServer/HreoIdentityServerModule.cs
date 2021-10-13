@@ -83,6 +83,8 @@ namespace PBL6.Hreo
         )]
     public class HreoIdentityServerModule : AbpModule
     {
+        // dbcontext, repository, entities
+
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
             var hostingEnvironment = context.Services.GetHostingEnvironment();

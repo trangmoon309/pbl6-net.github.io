@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
+using PBL6.Hreo.Entities;
 using Volo.Abp;
+using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace PBL6.Hreo.EntityFrameworkCore
 {
@@ -19,25 +21,17 @@ namespace PBL6.Hreo.EntityFrameworkCore
 
             optionsAction?.Invoke(options);
 
-            /* Configure all entities here. Example:
-
-            builder.Entity<Question>(b =>
+            builder.Entity<TestQuestion>(b =>
             {
-                //Configure table & schema name
-                b.ToTable(options.TablePrefix + "Questions", options.Schema);
-            
+                b.ToTable(options.TablePrefix + "TestQuestions", "test");
                 b.ConfigureByConvention();
-            
-                //Properties
-                b.Property(q => q.Title).IsRequired().HasMaxLength(QuestionConsts.MaxTitleLength);
-                
-                //Relations
-                b.HasMany(question => question.Tags).WithOne().HasForeignKey(qt => qt.QuestionId);
-
-                //Indexes
-                b.HasIndex(q => q.CreationTime);
             });
-            */
+
+            builder.Entity<Test>(b =>
+            {
+                b.ToTable(options.TablePrefix + "Tests", "test");
+                b.ConfigureByConvention();
+            });
         }
     }
 }
