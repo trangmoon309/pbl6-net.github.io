@@ -10,7 +10,7 @@ namespace PBL6.Hreo.EntityFrameworkCore
     {
         public DbSet<TestQuestion> TestQuestions { get; set; }
 
-        public DbSet<Post> Tests { get; set; }
+        public DbSet<Test> Tests { get; set; }
 
         public DbSet<InterestedPost> InterestedPosts { get; set; }
 

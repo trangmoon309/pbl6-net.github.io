@@ -27,7 +27,7 @@ namespace PBL6.Hreo.EntityFrameworkCore
                 b.ConfigureByConvention();
             });
 
-            builder.Entity<Post>(b =>
+            builder.Entity<Test>(b =>
             {
                 b.ToTable(options.TablePrefix + "Tests", "test");
                 b.ConfigureByConvention();
