@@ -9,8 +9,16 @@ namespace PBL6.Hreo.EntityFrameworkCore
     public class HreoDbContext : AbpDbContext<HreoDbContext>, IHreoDbContext
     {
         public DbSet<TestQuestion> TestQuestions { get; set; }
+
         public DbSet<Test> Tests { get; set; }
 
+        public DbSet<InterestedPost> InterestedPosts { get; set; }
+
+        public DbSet<InvitationPost> InvitationPosts { get; set; }
+
+        public DbSet<ApplicantPost> ApplicantPosts { get; set; }
+
+        public DbSet<Post> Posts { get; set; }
 
         public HreoDbContext(DbContextOptions<HreoDbContext> options) 
             : base(options)
