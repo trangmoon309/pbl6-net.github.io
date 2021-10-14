@@ -25,6 +25,5 @@ namespace PBL6.Hreo.Entities
         public float TimeUsed { get; set; }
 
         public float TimeFinished { get; set; }
-
     }
 }

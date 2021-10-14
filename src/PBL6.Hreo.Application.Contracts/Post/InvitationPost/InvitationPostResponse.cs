@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.Application.Dtos;
 using static PBL6.Hreo.Common.Enum.Enum;
 
-namespace PBL6.Hreo.Entities
+namespace PBL6.Hreo.Models
 {
-    public class InvitationPost : FullAuditedAggregateRoot<Guid>
+    public class InvitationPostResponse : FullAuditedEntityDto<Guid>
     {
-        public Guid PostID { get; set; }
+        public PostResponse Post { get; set; }
 
         public Guid ApplicantID { get; set; }
 
-       
-        //dư
         public Guid CreatorID { get; set; }
 
         public InvitationPostStatus InvitationPostStatus { get; set; }
