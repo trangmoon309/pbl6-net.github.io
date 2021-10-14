@@ -82,7 +82,7 @@ namespace PBL6.Hreo.Common.Enum
             SUBMITTED = 1,
         }
 
-        public enum ApplicationStatus
+        public enum ApplicantPostStatus
         {
             [Description("Open")]
             OPEN = 0,

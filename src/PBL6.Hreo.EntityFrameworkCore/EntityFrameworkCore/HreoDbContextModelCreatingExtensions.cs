@@ -27,9 +27,33 @@ namespace PBL6.Hreo.EntityFrameworkCore
                 b.ConfigureByConvention();
             });
 
-            builder.Entity<Test>(b =>
+            builder.Entity<Post>(b =>
             {
                 b.ToTable(options.TablePrefix + "Tests", "test");
+                b.ConfigureByConvention();
+            });
+
+            builder.Entity<InterestedPost>(b =>
+            {
+                b.ToTable("InterestedPosts", "post");
+                b.ConfigureByConvention();
+            });
+
+            builder.Entity<InvitationPost>(b =>
+            {
+                b.ToTable("InvitationPosts", "post");
+                b.ConfigureByConvention();
+            });
+
+            builder.Entity<ApplicantPost>(b =>
+            {
+                b.ToTable("ApplicantPosts", "post");
+                b.ConfigureByConvention();
+            });
+
+            builder.Entity<Post>(b =>
+            {
+                b.ToTable("Posts", "post");
                 b.ConfigureByConvention();
             });
         }

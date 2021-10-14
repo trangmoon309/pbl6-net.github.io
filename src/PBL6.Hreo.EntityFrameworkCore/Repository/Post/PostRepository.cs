@@ -4,13 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
-using Volo.Abp.EntityFrameworkCore;
 
 namespace PBL6.Hreo.Repository
 {
-    public class TestRepository : EfCoreRepository<IHreoDbContext, Test, Guid>, ITestRepository
+    public class PostRepository : EfCoreRepository<IHreoDbContext, Post, Guid>, IPostRepository
     {
-        public TestRepository(IDbContextProvider<IHreoDbContext> dbContextProvider) : base(dbContextProvider)
+        public PostRepository(Volo.Abp.EntityFrameworkCore.IDbContextProvider<IHreoDbContext> dbContextProvider) : base(dbContextProvider)
         {
         }
     }
