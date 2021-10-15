@@ -10,8 +10,6 @@ namespace PBL6.Hreo.Entities
     {
         public string Title { get; set; }
 
-        public Guid CreatorID { get; set; }
-
         public Language Language { get; set; }
 
         public string Content { get; set; }

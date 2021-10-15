@@ -14,8 +14,4 @@
     <ProjectReference Include="..\PBL6.Hreo.Domain\PBL6.Hreo.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Post\" />
-  </ItemGroup>
-
 </Project>

@@ -12,10 +12,6 @@ namespace PBL6.Hreo.Entities
 
         public Guid ApplicantID { get; set; }
 
-       
-        //dư
-        public Guid CreatorID { get; set; }
-
         public InvitationPostStatus InvitationPostStatus { get; set; }
 
         public DateTime SentTime { get; set; }
