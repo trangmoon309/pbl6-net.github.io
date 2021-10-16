@@ -1,6 +1,12 @@
 ﻿using AutoMapper;
-using PBL6.Hreo.Entities;
+using System.Linq;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using System;
+using System.Reflection;
+using System.ComponentModel;
 using PBL6.Hreo.Models;
+using PBL6.Hreo.Entities;
 
 namespace PBL6.Hreo
 {
@@ -15,6 +21,14 @@ namespace PBL6.Hreo
 
             CreateMap<Test, TestResponse>(MemberList.None);
             CreateMap<TestRequest, Test>(MemberList.None);
+
+
+            CreateMap<User, UserResponse>(MemberList.None)
+                 .ForMember(x => x.Roles, map => map.MapFrom(p => p.UserRoles.Select(x => x.Role)));
+
+
+            CreateMap<Role, RoleResponse>(MemberList.None);
+            CreateMap<RoleRequest, Role>(MemberList.None);
         }
     }
 }

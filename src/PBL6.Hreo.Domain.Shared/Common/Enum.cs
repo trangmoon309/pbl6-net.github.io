@@ -7,6 +7,13 @@ namespace PBL6.Hreo.Common.Enum
 {
     public class Enum
     {
+        public enum RoleCodes
+        {
+            admin,
+            hr,
+            applicant
+        }
+
         public enum Language
         {
             [Description("Net")]
@@ -47,6 +54,30 @@ namespace PBL6.Hreo.Common.Enum
 
             [Description("Senior")]
             SENIOR = 4,
+        }
+
+        public enum UserStatus
+        {
+            [Description("Ready")]
+            READY = 0,
+
+            [Description("Not Ready")]
+            NOTREADY = 1,
+        }
+
+        public enum Major
+        {
+            [Description("Công nghệ phần mềm")]
+            CNPM = 0,
+
+            [Description("An toàn thông tin")]
+            ATTT = 1,
+
+            [Description("Hệ thống thông tin")]
+            HTTT = 2,
+
+            [Description("Trí tuệ nhân tạo")]
+            TTNT = 3,
         }
 
         public enum PostStatus
