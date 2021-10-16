@@ -5,16 +5,15 @@ using static PBL6.Hreo.Common.Enum.Enum;
 
 namespace PBL6.Hreo.Models
 {
-    public class InvitationPostRequest
+    public class InterestedPostRequest
     {
         public Guid PostID { get; set; }
 
         public Guid ApplicantID { get; set; }
 
-        public InvitationPostStatus InvitationPostStatus { get; set; }
+        public InterestedPostStatus InterestedPostStatus { get; set; }
 
         public DateTime SentTime { get; set; }
 
-        public DateTime LastModifiedTime { get; set; }
     }
 }
