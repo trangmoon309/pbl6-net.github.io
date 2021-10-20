@@ -11,7 +11,7 @@ using Volo.Abp.Application.Dtos;
 namespace PBL6.Hreo.Controllers
 {
     [Route("api/test-questions")]
-    public class TestQuestionController : Controller
+    public class TestQuestionController : HreoController
     {
         private readonly ITestQuestionAppService _service;
 

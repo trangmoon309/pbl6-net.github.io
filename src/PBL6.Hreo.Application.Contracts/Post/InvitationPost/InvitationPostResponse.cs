@@ -10,9 +10,7 @@ namespace PBL6.Hreo.Models
     {
         public PostResponse Post { get; set; }
 
-        public Guid ApplicantID { get; set; }
-
-        public Guid CreatorID { get; set; }
+        public ApplicantPostResponse ApplicantPost { get; set; }
 
         public InvitationPostStatus InvitationPostStatus { get; set; }
 

@@ -14,6 +14,12 @@ namespace PBL6.Hreo.Common.Enum
             applicant
         }
 
+        public enum FileType
+        {
+            Directory = 1,
+            File = 2
+        }
+
         public enum Language
         {
             [Description("Net")]

@@ -17,6 +17,5 @@ namespace PBL6.Hreo.EntityFrameworkCore
         DbSet<Role> AbpRoles { get; set; }
 
         DbSet<UserRole> AbpUserRoles { get; set; }
-
     }
 }

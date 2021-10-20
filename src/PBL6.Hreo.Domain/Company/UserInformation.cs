@@ -24,8 +24,5 @@ namespace PBL6.Hreo.Entities
         public UserStatus Status { get; set; }
 
         public Major Major { get; set; }
-
-        [ForeignKey("UserId")]
-        public User User { get; set; }
     }
 }

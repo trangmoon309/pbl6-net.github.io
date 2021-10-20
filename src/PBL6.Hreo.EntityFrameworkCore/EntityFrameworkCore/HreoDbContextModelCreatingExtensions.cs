@@ -1,4 +1,5 @@
 ﻿using System;
+using FileService;
 using Microsoft.EntityFrameworkCore;
 using PBL6.Hreo.Entities;
 using Volo.Abp;
@@ -54,6 +55,36 @@ namespace PBL6.Hreo.EntityFrameworkCore
             builder.Entity<Post>(b =>
             {
                 b.ToTable("Posts", "post");
+                b.ConfigureByConvention();
+            });
+
+            builder.Entity<Company>(b =>
+            {
+                b.ToTable("Companies", "company");
+                b.ConfigureByConvention();
+            });
+
+            builder.Entity<CompanyReview>(b =>
+            {
+                b.ToTable("CompanyReviews", "company");
+                b.ConfigureByConvention();
+            });
+
+            builder.Entity<Branch>(b =>
+            {
+                b.ToTable("Branches", "company");
+                b.ConfigureByConvention();
+            });
+
+            builder.Entity<UserInformation>(b =>
+            {
+                b.ToTable("UserInformations", "user");
+                b.ConfigureByConvention();
+            });
+
+            builder.Entity<FileInformation>(b =>
+            {
+                b.ToTable("FileInformations", "file");
                 b.ConfigureByConvention();
             });
         }

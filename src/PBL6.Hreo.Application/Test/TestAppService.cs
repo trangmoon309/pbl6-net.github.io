@@ -19,7 +19,8 @@ namespace PBL6.Hreo.Services
             Guid,
             PagedAndSortedResultRequestDto,
             TestRequest,
-            TestRequest>, ITestAppService
+            TestRequest>, 
+        ITestAppService
     {
         private readonly ITestRepository _repository;
         private readonly IAsyncQueryableExecuter _asyncQueryableExecuter;

@@ -5,10 +5,10 @@ using PBL6.Hreo.Models;
 using PBL6.Hreo.Services;
 using Volo.Abp.Application.Dtos;
 
-namespace Greenglobal.Erp.Controllers
+namespace PBL6.Hreo.Controllers
 {
     [Route("api/user")]
-    public class UserController : Controller
+    public class UserController : HreoController
     {
         private readonly IUserAppService _service;
 

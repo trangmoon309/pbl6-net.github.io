@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.Text;
 using static PBL6.Hreo.Common.Enum.Enum;
 
-namespace PBL6.Hreo.Post.InvitationPost
+namespace PBL6.Hreo.Models
 {
     public class InvitationPostRequest
     {
         public Guid PostID { get; set; }
 
         public Guid ApplicantID { get; set; }
-
-        public Guid CreatorID { get; set; }
 
         public InvitationPostStatus InvitationPostStatus { get; set; }
 

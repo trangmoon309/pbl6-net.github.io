@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FileService;
+using Microsoft.EntityFrameworkCore;
 using PBL6.Hreo.Entities;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
@@ -19,6 +20,16 @@ namespace PBL6.Hreo.EntityFrameworkCore
         public DbSet<ApplicantPost> ApplicantPosts { get; set; }
 
         public DbSet<Post> Posts { get; set; }
+
+        public DbSet<Branch> Branches { get; set; }
+
+        public DbSet<Company> Companies { get; set; }
+
+        public DbSet<CompanyReview> CompanyReviews { get; set; }
+
+        public DbSet<UserInformation> UserInformations { get; set; }
+
+        public DbSet<FileInformation> FileImformations { get; set; }
 
         public HreoDbContext(DbContextOptions<HreoDbContext> options) 
             : base(options)

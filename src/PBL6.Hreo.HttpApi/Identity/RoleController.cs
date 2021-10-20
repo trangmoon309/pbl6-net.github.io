@@ -5,10 +5,10 @@ using PBL6.Hreo.Models;
 using PBL6.Hreo.Services;
 using Volo.Abp.Application.Dtos;
 
-namespace Greenglobal.Erp.Controllers
+namespace PBL6.Hreo.Controllers
 {
     [Route("api/roles")]
-    public class RoleController : Controller
+    public class RoleController : HreoController
     {
         private readonly IRoleAppService _service;
 
