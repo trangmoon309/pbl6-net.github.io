@@ -7,7 +7,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace PBL6.Hreo.Controllers
 {
-    [Route("api/user")]
+    [Route("api/users")]
     public class UserController : HreoController
     {
         private readonly IUserAppService _service;

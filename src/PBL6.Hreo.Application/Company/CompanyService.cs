@@ -13,18 +13,19 @@ using Volo.Abp.Linq;
 
 namespace PBL6.Hreo.Services
 {
-    public class CompanyService : CrudAppService<
+    public class CompanyAppService : CrudAppService<
             Company,
             CompanyResponse,
             Guid,
             PagedAndSortedResultRequestDto,
             CompanyRequest,
-            CompanyRequest>, ICompanyAppService
+            CompanyRequest>,
+        ICompanyAppService
     {
         private readonly ICompanyRepository _repository;
         private readonly IAsyncQueryableExecuter _asyncQueryableExecuter;
 
-        public CompanyService(ICompanyRepository repository,
+        public CompanyAppService(ICompanyRepository repository,
             IAsyncQueryableExecuter asyncQueryableExecuter) : base(repository)
         {
             _repository = repository;
