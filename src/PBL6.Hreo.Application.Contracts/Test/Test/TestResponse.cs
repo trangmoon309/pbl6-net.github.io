@@ -12,9 +12,9 @@ namespace PBL6.Hreo.Models
 
         public bool Status { get; set; }
 
-        public Language Language { get; set; }
+        public string Language { get; set; }
 
-        public Level Level { get; set; }
+        public string Level { get; set; }
 
         public TimeSpan LimitTime { get; set; }
     }

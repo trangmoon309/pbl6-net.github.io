@@ -10,7 +10,7 @@ namespace PBL6.Hreo.Models
     {
         public string Title { get; set; }
 
-        public Language Language { get; set; }
+        public string Language { get; set; }
 
         public string Content { get; set; }
 
@@ -18,7 +18,7 @@ namespace PBL6.Hreo.Models
 
         public Level Level { get; set; }
 
-        public PostStatus PostStatus { get; set; }
+        public string PostStatus { get; set; }
 
         public int DateRange { get; set; }
 

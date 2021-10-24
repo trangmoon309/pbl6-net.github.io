@@ -16,11 +16,11 @@ namespace PBL6.Hreo.Models
 
         public string GithubLink { get; set; }
 
-        public Language Language { get; set; }
+        public string Language { get; set; }
 
-        public Level Level { get; set; }
+        public string Level { get; set; }
 
-        public UserStatus Status { get; set; }
+        public string Status { get; set; }
 
         public Major Major { get; set; }
     }

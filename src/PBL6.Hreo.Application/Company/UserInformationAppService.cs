@@ -4,6 +4,7 @@ using PBL6.Hreo.Repository;
 using PBL6.Hreo.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
@@ -29,6 +30,21 @@ namespace PBL6.Hreo.Services
         {
             _repository = repository;
             _asyncQueryableExecuter = asyncQueryableExecuter;
+        }
+
+        public override async Task<PagedResultDto<UserInformationResponse>> GetListAsync(PagedAndSortedResultRequestDto input)
+        {
+            var query = _repository.GetList();
+            
+            var toList = await _asyncQueryableExecuter.ToListAsync(query);
+            var count = toList.Count();
+
+            toList = toList.Skip(input.SkipCount).Take(input.MaxResultCount).ToList();
+
+            var responses = ObjectMapper.Map<List<UserInformation>, List<UserInformationResponse>>(toList);
+
+            return new PagedResultDto<UserInformationResponse>(count, responses);
+
         }
     }
 }

@@ -19,22 +19,35 @@ namespace PBL6.Hreo
              * Alternatively, you can split your mapping configurations
              * into multiple profile classes for a better organization. */
 
-            CreateMap<Test, TestResponse>(MemberList.None);
+            CreateMap<Test, TestResponse>(MemberList.None)
+                .ForMember(x => x.Language, y => y.MapFrom(y => y.Language.ToString()))
+                .ForMember(x => x.Level, y => y.MapFrom(y => y.Level.ToString()));
+
             CreateMap<TestRequest, Test>(MemberList.None);
 
             CreateMap<TestQuestion, TestQuestionResponse>(MemberList.None);
             CreateMap<TestQuestionRequest, TestQuestion>(MemberList.None);
 
-            CreateMap<Post, PostResponse>(MemberList.None);
+            CreateMap<Post, PostResponse>(MemberList.None)
+                .ForMember(x => x.Language, y => y.MapFrom(y => y.Language.ToString()))
+                .ForMember(x => x.Level, y => y.MapFrom(y => y.Level.ToString()))
+                .ForMember(x => x.PostStatus, y => y.MapFrom(y => y.PostStatus.ToString()));
+
             CreateMap<PostRequest, Post>(MemberList.None);
 
-            CreateMap<InvitationPost, InvitationPostResponse>(MemberList.None);
+            CreateMap<InvitationPost, InvitationPostResponse>(MemberList.None)
+                .ForMember(x => x.InvitationPostStatus, y => y.MapFrom(y => y.InvitationPostStatus.ToString()));
+
             CreateMap<InvitationPostRequest, InvitationPost>(MemberList.None);
 
-            CreateMap<InterestedPost, InterestedPostResponse>(MemberList.None);
+            CreateMap<InterestedPost, InterestedPostResponse>(MemberList.None)
+                .ForMember(x => x.InterestedPostStatus, y => y.MapFrom(y => y.InterestedPostStatus.ToString()));
+
             CreateMap<InterestedPostRequest, InterestedPost>(MemberList.None);
 
-            CreateMap<ApplicantPost, ApplicantPostResponse>(MemberList.None);
+            CreateMap<ApplicantPost, ApplicantPostResponse>(MemberList.None)
+                .ForMember(x => x.ApplicantPostStatus, y => y.MapFrom(y => y.ApplicantPostStatus.ToString()));
+
             CreateMap<ApplicantPostRequest, ApplicantPost>(MemberList.None);
 
 
@@ -58,7 +71,11 @@ namespace PBL6.Hreo
             CreateMap<CompanyReviewRequest, CompanyReview>(MemberList.None);
 
 
-            CreateMap<UserInformation, UserInformationResponse>(MemberList.None);
+            CreateMap<UserInformation, UserInformationResponse>(MemberList.None)
+                .ForMember(x => x.Language, y => y.MapFrom(y => y.Language.ToString()))
+                .ForMember(x => x.Level, y => y.MapFrom(y => y.Level.ToString()))
+                .ForMember(x => x.Major, y => y.MapFrom(y => y.Major.ToString()));
+
             CreateMap<UserInformationRequest, UserInformation>(MemberList.None);
 
             // File

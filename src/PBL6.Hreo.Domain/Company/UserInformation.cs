@@ -24,5 +24,7 @@ namespace PBL6.Hreo.Entities
         public UserStatus Status { get; set; }
 
         public Major Major { get; set; }
+
+        public Branch Branch { get; set; }
     }
 }

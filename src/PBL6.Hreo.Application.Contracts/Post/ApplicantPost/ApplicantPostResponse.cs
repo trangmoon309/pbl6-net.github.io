@@ -14,7 +14,7 @@ namespace PBL6.Hreo.Models
 
         public ApplicantPostResponse ApplicantPost { get; set; }
 
-        public ApplicantPostStatus ApplicantPostStatus { get; set; }
+        public string ApplicantPostStatus { get; set; }
 
         public string ApplicantAnswer { get; set; }
 
