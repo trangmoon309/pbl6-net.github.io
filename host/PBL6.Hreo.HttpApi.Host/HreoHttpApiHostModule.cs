@@ -32,6 +32,7 @@ using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.Swashbuckle;
 using Volo.Abp.VirtualFileSystem;
 using Volo.Abp.EntityFrameworkCore.PostgreSql;
+using System.Text.Json.Serialization;
 
 namespace PBL6.Hreo
 {
@@ -90,6 +91,9 @@ namespace PBL6.Hreo
                     options.DocInclusionPredicate((docName, description) => true);
                     options.CustomSchemaIds(type => type.FullName);
                 });
+
+            context.Services.AddControllers().AddJsonOptions(options =>
+                        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
             Configure<AbpLocalizationOptions>(options =>
             {
