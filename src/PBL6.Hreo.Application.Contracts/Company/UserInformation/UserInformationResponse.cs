@@ -23,5 +23,7 @@ namespace PBL6.Hreo.Models
         public string Status { get; set; }
 
         public Major Major { get; set; }
+
+        public BranchResponse Branch { get; set; }
     }
 }

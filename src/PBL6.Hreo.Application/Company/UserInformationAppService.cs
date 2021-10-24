@@ -42,9 +42,7 @@ namespace PBL6.Hreo.Services
             toList = toList.Skip(input.SkipCount).Take(input.MaxResultCount).ToList();
 
             var responses = ObjectMapper.Map<List<UserInformation>, List<UserInformationResponse>>(toList);
-
             return new PagedResultDto<UserInformationResponse>(count, responses);
-
         }
     }
 }

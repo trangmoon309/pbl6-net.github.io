@@ -9,6 +9,8 @@
 
   <ItemGroup>
     <PackageReference Include="Volo.Abp.AutoMapper" Version="4.4.3" />
+    <PackageReference Include="Volo.Abp.BlobStoring" Version="4.4.3" />
+    <PackageReference Include="Volo.Abp.BlobStoring.FileSystem" Version="4.4.3" />
     <PackageReference Include="Volo.Abp.Ddd.Application" Version="4.4.3" />
     <ProjectReference Include="..\PBL6.Hreo.Application.Contracts\PBL6.Hreo.Application.Contracts.csproj" />
     <ProjectReference Include="..\PBL6.Hreo.Domain\PBL6.Hreo.Domain.csproj" />

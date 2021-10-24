@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Volo.Abp.BlobStoring;
+﻿using Volo.Abp.BlobStoring;
 
 namespace FileService.Container
 {
-    [BlobContainerName("file-storage")]
+    [BlobContainerName("file-storages")]
     public class FileContainer
     {
     }

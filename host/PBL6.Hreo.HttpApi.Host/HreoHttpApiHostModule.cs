@@ -33,6 +33,8 @@ using Volo.Abp.Swashbuckle;
 using Volo.Abp.VirtualFileSystem;
 using Volo.Abp.EntityFrameworkCore.PostgreSql;
 using System.Text.Json.Serialization;
+using Volo.Abp.BlobStoring;
+using Volo.Abp.BlobStoring.FileSystem;
 
 namespace PBL6.Hreo
 {
@@ -150,6 +152,17 @@ namespace PBL6.Hreo
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials();
+                });
+            });
+
+            Configure<AbpBlobStoringOptions>(options =>
+            {
+                options.Containers.ConfigureDefault(container =>
+                {
+                    container.UseFileSystem(fileSystem =>
+                    {
+                        fileSystem.BasePath = configuration["FileService:UploadPath"] ?? @"my_files";
+                    });
                 });
             });
         }
