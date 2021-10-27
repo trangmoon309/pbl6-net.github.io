@@ -7,6 +7,8 @@ namespace PBL6.Hreo.Entities
 {
     public class TestQuestion : FullAuditedAggregateRoot<Guid>
     {
+        public Guid TestId {get; set;}
+
         public int OrderIndex { get; set; }
 
         public string Content { get; set; }
@@ -14,5 +16,7 @@ namespace PBL6.Hreo.Entities
         public string Answers { get; set; }
 
         public int Result { get; set; }
+
+        public Test Test {get; set;}
     }
 }

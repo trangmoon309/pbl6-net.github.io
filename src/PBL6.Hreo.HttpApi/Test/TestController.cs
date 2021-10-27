@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using PBL6.Hreo.Models;
 using PBL6.Hreo.Services;
 using System;
@@ -28,10 +29,50 @@ namespace PBL6.Hreo.Controllers
             return Ok(testList);
         }
 
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetAsync(Guid id)
+        {
+            var result = await _service.GetAsync(id);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("by-condition")]
+        public async Task<IActionResult> GetListByConditionAsync(SearchTestRequest request, PagedAndSortedResultRequestDto pageRequest)
+        {
+            var result = await _service.GetListByCondittion(request, pageRequest);
+            return Ok(result);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateAsync(TestRequest request)
         {
             var createdTest = await _service.CreateAsync(request);
+            return Ok(createdTest);
+        }
+
+        [HttpPost]
+        [Route("with-quetions")]
+        public async Task<IActionResult> CreateWithQuestionAsync([FromBody]TestWithQuestionRequest request)
+        {
+            var createdTest = await _service.CreateWithQuestionsAsync(request);
+            return Ok(createdTest);
+        }
+                
+        [HttpPost]
+        [Route("import-questions")]
+        public IActionResult ImportQuestionAsync(IFormFile importExcelFile)
+        {
+            var createdTest = _service.ImportExcelForCreatingTest(importExcelFile);
+            return Ok(createdTest);
+        }
+
+        [HttpPut]
+        [Route("with-quetions")]
+        public async Task<IActionResult> UpdateWithQuestionAsync(Guid id, [FromBody] TestWithQuestionRequest request)
+        {
+            var createdTest = await _service.UpdateWithQuestionsAsync(id, request);
             return Ok(createdTest);
         }
 

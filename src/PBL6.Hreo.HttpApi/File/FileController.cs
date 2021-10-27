@@ -9,11 +9,12 @@ using PBL6.Hreo;
 using PBL6.Hreo.File;
 using PBL6.Hreo.Models;
 using Volo.Abp;
+using Volo.Abp.Application.Dtos;
 using static PBL6.Hreo.Common.Enum.Enum;
 
 namespace FileService.Controllers
 {
-    [Route("api/file-informations")]
+    [Route("api/files")]
     public class FileController : HreoController
     {
         private readonly IFileAppService _fileAppService;
@@ -23,48 +24,36 @@ namespace FileService.Controllers
             _fileAppService = fileAppService;
         }
 
-        [HttpPost]
-        [Consumes("multipart/form-data")]
-        public async Task<IActionResult> UploadAsync(List<IFormFile> files)
-        {
-            var data = new List<CreateFileResponse>();
-            foreach (var item in files)
-            {
-                using (var memoryStream = new MemoryStream())
-                {
-                    await item.CopyToAsync(memoryStream);
-
-                    var result = await _fileAppService.CreateFileAsync(new CreateFileRequest
-                    {
-                        FileName = item.FileName,
-                        MimeType = item.ContentType,
-                        FileType = FileType.File,
-                        ParentId = null,
-                        OwnerUserId = null,
-                        Length = item.Length,
-                        Content = memoryStream.ToArray()
-                    });
-
-                    data.Add(result);
-                }
-            }
-
-            return Ok(new
-            {
-                total = data != null && data.Count > 0 ? data.Count : -1,
-                results = data
-            });
-        }
-       
         [HttpGet]
-        public async Task<IActionResult> GetFileInfoListAsync(List<Guid> fileIds)
+        public async Task<IActionResult> GetListAsync()
         {
-            var data = await _fileAppService.GetFileInfoListAsync(fileIds);
-            return Ok(new
-            {
-                total = data.Count,
-                results = data
-            });
+            var result = await _fileAppService.ListBlobsAsync();
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("paged")]
+        public async Task<IActionResult> GetList(PagedAndSortedResultRequestDto input)
+        {
+            var postList = await _fileAppService.GetListAsync(input);
+
+            return Ok(postList);
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetAsync(Guid id)
+        {
+            var result = await _fileAppService.GetAsync(id);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("uploading")]
+        public async Task<IActionResult> UploadFileASync(IFormFile file)
+        {
+            var result = await _fileAppService.UploadFileBlobAsync(file);
+            return Ok(result);
         }
     }
 }

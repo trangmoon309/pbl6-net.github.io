@@ -35,6 +35,7 @@ using Volo.Abp.EntityFrameworkCore.PostgreSql;
 using System.Text.Json.Serialization;
 using Volo.Abp.BlobStoring;
 using Volo.Abp.BlobStoring.FileSystem;
+using Azure.Storage.Blobs;
 
 namespace PBL6.Hreo
 {
@@ -154,6 +155,8 @@ namespace PBL6.Hreo
                         .AllowCredentials();
                 });
             });
+
+            context.Services.AddSingleton(x => new BlobServiceClient(configuration["AzureBlobStorageConnectionString"]));
 
             Configure<AbpBlobStoringOptions>(options =>
             {

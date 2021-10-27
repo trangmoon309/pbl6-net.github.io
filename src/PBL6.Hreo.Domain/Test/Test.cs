@@ -17,5 +17,7 @@ namespace PBL6.Hreo.Entities
         public Level Level { get; set; }
 
         public TimeSpan LimitTime { get; set; }
+
+        public List<TestQuestion> TestQuestions {get; set;}
     }
 }

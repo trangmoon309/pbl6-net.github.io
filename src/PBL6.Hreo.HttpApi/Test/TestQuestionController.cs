@@ -21,6 +21,14 @@ namespace PBL6.Hreo.Controllers
         }
 
         [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetAsync(Guid id)
+        {
+            var result = await _service.GetAsync(id);
+            return Ok(result);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetList(PagedAndSortedResultRequestDto input)
         {
             var testList = await _service.GetListAsync(input);

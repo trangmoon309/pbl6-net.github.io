@@ -22,8 +22,14 @@ namespace PBL6.Hreo
             CreateMap<Test, TestResponse>(MemberList.None)
                 .ForMember(x => x.Language, y => y.MapFrom(y => y.Language.ToString()))
                 .ForMember(x => x.Level, y => y.MapFrom(y => y.Level.ToString()));
+            CreateMap<Test, TestWithQuestionResponse>(MemberList.None);
 
-            CreateMap<TestRequest, Test>(MemberList.None);
+            CreateMap<TestRequest, Test>(MemberList.None)
+                .ForMember(x => x.LimitTime, y => y.MapFrom(y => TimeSpan.FromMinutes(y.LimitTime)));
+            CreateMap<TestWithQuestionRequest, Test>(MemberList.None)
+                .ForMember(x => x.LimitTime, y => y.MapFrom(y => TimeSpan.FromMinutes(y.LimitTime)));
+
+            CreateMap<TestWithQuestionRequest, TestRequest>(MemberList.None);
 
             CreateMap<TestQuestion, TestQuestionResponse>(MemberList.None);
             CreateMap<TestQuestionRequest, TestQuestion>(MemberList.None);

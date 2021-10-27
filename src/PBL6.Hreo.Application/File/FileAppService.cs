@@ -1,6 +1,10 @@
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using FileService;
 using FileService.Container;
 using FileService.FileRepository;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using PBL6.Hreo.File;
 using PBL6.Hreo.Models;
 using System;
@@ -30,60 +34,18 @@ namespace PBL6.Hreo.Services
         IFileAppService, ITransientDependency
     {
         private readonly IBlobContainer<FileContainer> _fileContainer;
+        private readonly BlobServiceClient _blobServiceClient;
+        private readonly IConfiguration _config;
 
         public FileAppService(
             IRepository<FileInformation, Guid> repository,
-            IBlobContainer<FileContainer> fileContainer
-        ): base(repository)
+            IBlobContainer<FileContainer> fileContainer,
+            BlobServiceClient blobServiceClient, 
+            IConfiguration config) : base(repository)
         {
             _fileContainer = fileContainer;
-        }
-
-        public async Task<List<FileInformationModel>> GetFileInfoListAsync(List<Guid> fileIds)
-        {
-            var query = Repository.Where(x => fileIds.Contains(x.Id));
-            var data = await AsyncExecuter.ToListAsync(query);
-
-            return ObjectMapper.Map<List<FileInformation>, List<FileInformationModel>>(data);
-        }
-
-        public virtual async Task<CreateFileResponse> CreateFileAsync(CreateFileRequest input)
-        {
-            var id = GuidGenerator.Create();
-            var date = DateTime.Today;
-            var year = date.ToString("yyyy"); var month = date.ToString("MM"); var ymd = date.ToString("yyyyMMdd");
-
-            var extension = System.IO.Path.GetExtension(input.FileName);
-
-            var fullPathAndName = System.IO.Path.Combine(year, month, ymd, $"{id}{extension}");
-
-            var file = new CreateUpdateFileInformationDto
-            {
-                Id = id,
-                Application = "ALL",
-                Mime = input.MimeType,
-                Name = $"{input.FileName}",
-                Size = Convert.ToInt32(input.Length),
-                Extension = extension,
-                Type = 1,
-                Url = $"/file-storage/{fullPathAndName.Replace("\\", "/")}",
-                FullPathAndName = fullPathAndName
-            };
-
-            // Save file to blob
-            await TrySaveBlobAsync(file, input.Content);
-
-            // Insert to db
-            await this.CreateAsync(file);
-
-            return await MapToCreateOutputDtoAsync(file);
-        }
-
-        public async Task<bool> TrySaveBlobAsync(CreateUpdateFileInformationDto file, byte[] fileContent, bool overrideExisting = false, CancellationToken cancellationToken = default)
-        {
-            await _fileContainer.SaveAsync(file.FullPathAndName, fileContent, overrideExisting, cancellationToken: cancellationToken);
-
-            return true;
+            _blobServiceClient = blobServiceClient;
+            _config = config;
         }
 
         protected virtual async Task<CreateFileResponse> MapToCreateOutputDtoAsync(CreateUpdateFileInformationDto file)
@@ -104,6 +66,51 @@ namespace PBL6.Hreo.Services
             };
 
             return await Task.FromResult(result);
-        }  
+        }
+
+        public async Task<IEnumerable<string>> ListBlobsAsync()
+        {
+            var containerClient = _blobServiceClient.GetBlobContainerClient("public-uploading");
+            var items = new List<string>();
+
+            await foreach (var blobItem in containerClient.GetBlobsAsync())
+            {
+                items.Add(_config["FileService:ImgPath"] + blobItem.Name);
+            }
+            return items;
+        }
+
+        public async Task<CreateFileResponse> UploadFileBlobAsync(IFormFile file)
+        {
+            var fileName = file.FileName;
+            var extension = System.IO.Path.GetExtension(fileName);
+
+            var entity = new CreateUpdateFileInformationDto
+            {
+                Id = Guid.NewGuid(),
+                Application = "ALL",
+                Name = fileName,
+                Extension = extension,
+                Type = 1,
+                Url = _config["FileService:ImgPath"] + fileName,
+            };
+
+            // Insert to db
+            await this.CreateAsync(entity);
+
+            // Insert to BLOB
+            var containerClient = _blobServiceClient.GetBlobContainerClient("public-uploading");
+            var blobClient = containerClient.GetBlobClient(fileName);
+            var httpHeaders = new BlobHttpHeaders()
+            {
+                ContentType = file.ContentType
+            };
+
+            var blobInfo = await blobClient.UploadAsync(file.OpenReadStream(), httpHeaders);
+
+            if (blobInfo != null) return await MapToCreateOutputDtoAsync(entity); 
+            return null;
+        }
+
     }
 }

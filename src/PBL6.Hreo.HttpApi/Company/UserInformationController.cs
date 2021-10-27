@@ -49,5 +49,13 @@ namespace PBL6.Hreo.Controllers
             await _service.DeleteAsync(id);
             return Ok();
         }
+
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetAsync(Guid id)
+        {
+            var result = await _service.GetAsync(id);
+            return Ok(result);
+        }
     }
 }

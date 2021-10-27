@@ -1,4 +1,6 @@
-﻿using PBL6.Hreo.Models;
+﻿using Azure.Storage.Blobs.Models;
+using Microsoft.AspNetCore.Http;
+using PBL6.Hreo.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,8 +17,8 @@ namespace PBL6.Hreo.File
             CreateUpdateFileInformationDto,
             CreateUpdateFileInformationDto>
     {
-        Task<CreateFileResponse> CreateFileAsync(CreateFileRequest input);
+        Task<IEnumerable<string>> ListBlobsAsync();
 
-        Task<List<FileInformationModel>> GetFileInfoListAsync(List<Guid> fileIds);
+        Task<CreateFileResponse> UploadFileBlobAsync(IFormFile file);
     }
 }

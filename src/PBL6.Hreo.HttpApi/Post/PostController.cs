@@ -28,6 +28,14 @@ namespace PBL6.Hreo.Controllers
             return Ok(postList);
         }
 
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetAsync(Guid id)
+        {
+            var result = await _service.GetAsync(id);
+            return Ok(result);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateAsync(PostRequest request)
         {
