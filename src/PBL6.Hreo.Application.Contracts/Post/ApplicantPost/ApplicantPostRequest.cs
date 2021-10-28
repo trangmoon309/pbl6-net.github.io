@@ -7,11 +7,11 @@ namespace PBL6.Hreo.Models
 {
     public class ApplicantPostRequest
     {
-        public Guid PostID { get; set; }
+        public Guid PostId { get; set; }
 
-        public Guid TestID { get; set; }
+        public Guid TestId { get; set; }
 
-        public Guid ApplicantID { get; set; }
+        public Guid ApplicantId { get; set; }
 
         public ApplicantPostStatus ApplicantPostStatus { get; set; }
 

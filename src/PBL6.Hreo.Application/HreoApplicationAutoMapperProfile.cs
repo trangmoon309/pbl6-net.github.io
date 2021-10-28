@@ -55,6 +55,7 @@ namespace PBL6.Hreo
                 .ForMember(x => x.ApplicantPostStatus, y => y.MapFrom(y => y.ApplicantPostStatus.ToString()));
 
             CreateMap<ApplicantPostRequest, ApplicantPost>(MemberList.None);
+            CreateMap<SendTestToApplicationRequest, ApplicantPost>(MemberList.None);
 
 
             CreateMap<User, UserResponse>(MemberList.None)

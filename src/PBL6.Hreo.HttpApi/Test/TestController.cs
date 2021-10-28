@@ -69,7 +69,7 @@ namespace PBL6.Hreo.Controllers
         }
 
         [HttpPut]
-        [Route("with-quetions")]
+        [Route("with-quetions/{id}")]
         public async Task<IActionResult> UpdateWithQuestionAsync(Guid id, [FromBody] TestWithQuestionRequest request)
         {
             var createdTest = await _service.UpdateWithQuestionsAsync(id, request);

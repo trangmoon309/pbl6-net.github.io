@@ -12,10 +12,7 @@ namespace PBL6.Hreo.Models
 
         public ApplicantPostResponse ApplicantPost { get; set; }
 
-        public string InvitationPostStatus { get; set; }
+        public InvitationPostStatus InvitationPostStatus { get; set; }
 
-        public DateTime SentTime { get; set; }
-
-        public DateTime LastModifiedTime { get; set; }
     }
 }

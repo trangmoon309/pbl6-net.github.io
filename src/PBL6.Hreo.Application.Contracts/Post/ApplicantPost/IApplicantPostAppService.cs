@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
@@ -14,5 +15,10 @@ namespace PBL6.Hreo.Services
                 ApplicantPostRequest,
                 ApplicantPostRequest>
     {
+        Task<List<ApplicantPostResponse>> CreateMultiple(List<SendTestToApplicationRequest> request);
+
+        Task<PagedResultDto<UserInformationResponse>> GetSubmitedListByCondittion(Guid postId, SearchInvitePostRequest request, PagedAndSortedResultRequestDto pageRequest);
+
+        Task<PagedResultDto<ApplicantPostResponse>> GetListByApplicant(Guid applicantId, SearchAppTestRequest request, PagedAndSortedResultRequestDto pageRequest);
     }
 }

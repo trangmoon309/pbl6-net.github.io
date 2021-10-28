@@ -29,6 +29,24 @@ namespace PBL6.Hreo.Controllers
         }
 
         [HttpGet]
+        [Route("by-post/summitted")]
+        public async Task<IActionResult> GetSubmittedList(Guid postId, SearchInvitePostRequest request, PagedAndSortedResultRequestDto pageRequest)
+        {
+            var applicant_postList = await _service.GetSubmitedListByCondittion(postId, request, pageRequest);
+
+            return Ok(applicant_postList);
+        }
+
+        [HttpGet]
+        [Route("by-applicant/{applicantId}")]
+        public async Task<IActionResult> GetListByApplicant(Guid applicantId, SearchAppTestRequest request, PagedAndSortedResultRequestDto pageRequest)
+        {
+            var applicant_postList = await _service.GetListByApplicant(applicantId, request, pageRequest);
+
+            return Ok(applicant_postList);
+        }
+
+        [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> GetAsync(Guid id)
         {
@@ -37,9 +55,9 @@ namespace PBL6.Hreo.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync(ApplicantPostRequest request)
+        public async Task<IActionResult> CreateAsync(List<SendTestToApplicationRequest> request)
         {
-            var createdApplicant_Post = await _service.CreateAsync(request);
+            var createdApplicant_Post = await _service.CreateMultiple(request);
             return Ok(createdApplicant_Post);
         }
 

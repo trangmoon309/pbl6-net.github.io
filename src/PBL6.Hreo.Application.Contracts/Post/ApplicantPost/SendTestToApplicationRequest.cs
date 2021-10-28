@@ -5,12 +5,12 @@ using static PBL6.Hreo.Common.Enum.Enum;
 
 namespace PBL6.Hreo.Models
 {
-    public class InvitationPostRequest
+    public class SendTestToApplicationRequest
     {
         public Guid PostId { get; set; }
 
-        public Guid ApplicantId { get; set; }
+        public Guid TestId { get; set; }
 
-        public InvitationPostStatus InvitationPostStatus { get; set; }
+        public Guid ApplicantId { get; set; }
     }
 }

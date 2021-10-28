@@ -7,9 +7,9 @@ namespace PBL6.Hreo.Models
 {
     public class InterestedPostRequest
     {
-        public Guid PostID { get; set; }
+        public Guid PostId { get; set; }
 
-        public Guid ApplicantID { get; set; }
+        public Guid ApplicantId { get; set; }
 
         public InterestedPostStatus InterestedPostStatus { get; set; }
 

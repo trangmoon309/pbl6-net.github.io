@@ -23,5 +23,11 @@ namespace PBL6.Hreo.Entities
         public int DateRange { get; set; }
 
         public bool IsHidden { get; set; }
+
+        public List<InvitationPost> InvitationPosts { get; set; }
+
+        public List<ApplicantPost> ApplicantPosts { get; set; }
+
+        public List<InterestedPost> InterestedPosts { get; set; }
     }
 }

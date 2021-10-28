@@ -21,6 +21,14 @@ namespace PBL6.Hreo.Controllers
         }
 
         [HttpGet]
+        [Route("by-conditions")]
+        public async Task<IActionResult> GetList(SearchPostRequest request, PagedAndSortedResultRequestDto pageRequest)
+        {
+            var postList = await _service.GetListByCondittion(request, pageRequest);
+            return Ok(postList);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetList(PagedAndSortedResultRequestDto input)
         {
             var postList = await _service.GetListAsync(input);
@@ -47,6 +55,14 @@ namespace PBL6.Hreo.Controllers
         public async Task<IActionResult> UpdateAsync(Guid id, PostRequest request)
         {
             var updatedPost = await _service.UpdateAsync(id, request);
+            return Ok(updatedPost);
+        }
+
+        [HttpPut]
+        [Route("hidden/{id}")]
+        public async Task<IActionResult> HiddenPostAsync(Guid id)
+        {
+            var updatedPost = await _service.HiddenPost(id);
             return Ok(updatedPost);
         }
 

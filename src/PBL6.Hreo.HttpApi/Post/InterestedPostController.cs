@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
+using static PBL6.Hreo.Common.Enum.Enum;
 
 namespace PBL6.Hreo.Controllers
 {
@@ -29,6 +30,14 @@ namespace PBL6.Hreo.Controllers
         }
 
         [HttpGet]
+        [Route("by-conditions")]
+        public async Task<IActionResult> GetList(SearchInterestPostRequest request, PagedAndSortedResultRequestDto pageRequest)
+        {
+            var postList = await _service.GetListByCondittion(request, pageRequest);
+            return Ok(postList);
+        }
+
+        [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> GetAsync(Guid id)
         {
@@ -48,6 +57,23 @@ namespace PBL6.Hreo.Controllers
         {
             var updatedInterested_Post = await _service.UpdateAsync(id, request);
             return Ok(updatedInterested_Post);
+        }
+
+        [HttpPut]
+        [Route("change-status/{id}")]
+        public async Task<IActionResult> UpdateStatusAsync(Guid id, InterestedPostStatus request)
+        {
+            var updatedInterested_Post = await _service.UpdateStatus(id, request);
+            return Ok(updatedInterested_Post);
+        }
+
+
+        [HttpDelete]
+        [Route("remove-submited-cv")]
+        public async Task<IActionResult> DeleteAsync(Guid applicantId, Guid postId)
+        {
+            await _service.DeleteByContidion(applicantId, postId);
+            return Ok();
         }
 
         [HttpDelete]
