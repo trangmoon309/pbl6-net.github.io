@@ -46,19 +46,22 @@ namespace PBL6.Hreo.Services
             try
             {
                 var userInfors = _userInforRepository.GetList();
+                var x = await _asyncQueryableExecuter.ToListAsync(userInfors);
                 var post = await _postRepository.GetById(postId);
 
-                var userIds = userInfors.Where(x => x.Language.ToString().Equals(post.Language.ToString())
-                                                  && x.Level.ToString().Equals(post.Level.ToString()))
+                var userIds = userInfors.Where(x => x.Language.Equals(post.Language)
+                                                  && x.Level.Equals(post.Level))
                                         .Select(x => x.Id);
+
+                var userIdList = await _asyncQueryableExecuter.ToListAsync(userIds);
 
                 var query = _repository.GetList();
 
-                query = query.Where(x => x.PostId.Equals(postId) && userIds.Contains(x.ApplicantId)).OrderByDescending(x => x.CreationTime);
+                query = query.Where(x => x.PostId.Equals(postId) && userIdList.Contains(x.ApplicantId)).OrderByDescending(x => x.CreationTime);
 
                 if (request.Status.HasValue) query = query.Where(x => x.InvitationPostStatus == request.Status.Value);
 
-                if (request.Level.HasValue) query = query.Where(x => x.UserInformation.Level.ToString() == request.Level.Value.ToString());
+                if (request.Level.HasValue) query = query.Where(x => x.Applicant.Level.ToString() == request.Level.Value.ToString());
 
 
                 var userList = await _asyncQueryableExecuter.ToListAsync(userInfors);
@@ -69,8 +72,12 @@ namespace PBL6.Hreo.Services
 
                 result.ForEach(x =>
                 {
-                    var invited = query.FirstOrDefault(y => y.ApplicantId.Equals(x.Id));
-                    if (invited != null) x.IsInvitedForPost = invited.InvitationPostStatus;
+                    if(query != null)
+                    {
+                        var invited = query.FirstOrDefault(y => y.ApplicantId.Equals(x.Id));
+                        if (invited != null) x.IsInvitedForPost = invited.InvitationPostStatus;
+                        else x.IsInvitedForPost = InvitationPostStatus.NOT_INVITED_YET;
+                    }
                     else x.IsInvitedForPost = InvitationPostStatus.NOT_INVITED_YET;
                 });
 
@@ -99,6 +106,15 @@ namespace PBL6.Hreo.Services
                 await _repository.CreateMultiple(entities);
 
                 var responses = ObjectMapper.Map<List<InvitationPost>, List<InvitationPostResponse>>(entities);
+
+                var post = await _postRepository.GetById(request.First().PostId);
+                var userInfors = _userInforRepository.GetList().ToList();
+
+                responses.ForEach(x =>
+                {
+                    x.Post = ObjectMapper.Map<Post, PostResponse>(post);
+                    x.Applicant = ObjectMapper.Map<UserInformation, UserInformationResponse>(userInfors.FirstOrDefault(y => y.Id.Equals(x.ApplicantId)));
+                });
 
                 return responses;
             }

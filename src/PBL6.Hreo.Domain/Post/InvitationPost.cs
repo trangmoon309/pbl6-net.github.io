@@ -18,6 +18,6 @@ namespace PBL6.Hreo.Entities
         public Post Post { get; set; }
 
         [ForeignKey("ApplicationId")]
-        public UserInformation UserInformation { get; set; }
+        public UserInformation Applicant { get; set; }
     }
 }

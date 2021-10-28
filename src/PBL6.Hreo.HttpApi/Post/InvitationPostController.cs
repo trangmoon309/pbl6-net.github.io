@@ -47,7 +47,7 @@ namespace PBL6.Hreo.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync(List<InvitationPostRequest> request)
+        public async Task<IActionResult> CreateAsync([FromBody]List<InvitationPostRequest> request)
         {
             var createdInvitation_Post = await _service.CreateMultiple(request);
             return Ok(createdInvitation_Post);
