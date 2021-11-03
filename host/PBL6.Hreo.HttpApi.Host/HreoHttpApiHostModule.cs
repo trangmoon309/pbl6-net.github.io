@@ -12,7 +12,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PBL6.Hreo.EntityFrameworkCore;
 using PBL6.Hreo.MultiTenancy;
-using StackExchange.Redis;
 using Microsoft.OpenApi.Models;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc.UI.MultiTenancy;
@@ -21,7 +20,6 @@ using Volo.Abp.AspNetCore.Serilog;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.Autofac;
 using Volo.Abp.Caching;
-using Volo.Abp.Caching.StackExchangeRedis;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
@@ -45,7 +43,6 @@ namespace PBL6.Hreo
         typeof(HreoHttpApiModule),
         typeof(AbpAspNetCoreMvcUiMultiTenancyModule),
         typeof(AbpAutofacModule),
-        typeof(AbpCachingStackExchangeRedisModule),
         typeof(AbpEntityFrameworkCorePostgreSqlModule),
         typeof(AbpAuditLoggingEntityFrameworkCoreModule),
         typeof(AbpPermissionManagementEntityFrameworkCoreModule),
@@ -129,13 +126,13 @@ namespace PBL6.Hreo
                 options.KeyPrefix = "Hreo:";
             });
 
-            if (!hostingEnvironment.IsDevelopment())
+/*            if (!hostingEnvironment.IsDevelopment())
             {
                 var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]);
                 context.Services
                     .AddDataProtection()
                     .PersistKeysToStackExchangeRedis(redis, "Hreo-Protection-Keys");
-            }
+            }*/
 
             context.Services.AddCors(options =>
             {
