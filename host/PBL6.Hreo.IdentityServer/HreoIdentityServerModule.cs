@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PBL6.Hreo.MultiTenancy;
-using StackExchange.Redis;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
 using Volo.Abp;
@@ -23,7 +22,6 @@ using Volo.Abp.Auditing;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.Autofac;
 using Volo.Abp.Caching;
-using Volo.Abp.Caching.StackExchangeRedis;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.FeatureManagement;
@@ -57,7 +55,6 @@ namespace PBL6.Hreo
         typeof(AbpAspNetCoreMvcUiBasicThemeModule),
         typeof(AbpAuditLoggingEntityFrameworkCoreModule),
         typeof(AbpAutofacModule),
-        typeof(AbpCachingStackExchangeRedisModule),
         typeof(AbpEntityFrameworkCorePostgreSqlModule),
         typeof(AbpIdentityEntityFrameworkCoreModule),
         typeof(AbpIdentityApplicationModule),
@@ -84,6 +81,7 @@ namespace PBL6.Hreo
     public class HreoIdentityServerModule : AbpModule
     {
         // dbcontext, repository, entities
+        private const string DefaultCorsPolicyName = "Default";
 
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
@@ -150,14 +148,6 @@ namespace PBL6.Hreo
                 options.IsEnabled = MultiTenancyConsts.IsEnabled;
             });
 
-            if (!hostingEnvironment.IsDevelopment())
-            {
-                var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]);
-                context.Services
-                    .AddDataProtection()
-                    .PersistKeysToStackExchangeRedis(redis, "Hreo-Protection-Keys");
-            }
-
             context.Services.AddCors(options =>
             {
                 options.AddDefaultPolicy(builder =>
@@ -197,7 +187,7 @@ namespace PBL6.Hreo
             app.UseCorrelationId();
             app.UseStaticFiles();
             app.UseRouting();
-            app.UseCors();
+            app.UseCors(DefaultCorsPolicyName);
             app.UseAuthentication();
             app.UseJwtTokenMiddleware();
 
