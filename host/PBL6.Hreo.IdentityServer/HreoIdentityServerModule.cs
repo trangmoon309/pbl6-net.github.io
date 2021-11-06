@@ -150,7 +150,7 @@ namespace PBL6.Hreo
 
             context.Services.AddCors(options =>
             {
-                options.AddDefaultPolicy(builder =>
+                options.AddPolicy(DefaultCorsPolicyName, builder =>
                 {
                     builder
                         .WithOrigins(
