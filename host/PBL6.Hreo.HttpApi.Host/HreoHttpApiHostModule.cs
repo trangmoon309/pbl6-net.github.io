@@ -52,9 +52,11 @@ namespace PBL6.Hreo
         )]
     public class HreoHttpApiHostModule : AbpModule
     {
+        private const string DefaultCorsPolicyName = "Default";
 
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
+
             var hostingEnvironment = context.Services.GetHostingEnvironment();
             var configuration = context.Services.GetConfiguration();
 
@@ -136,7 +138,7 @@ namespace PBL6.Hreo
 
             context.Services.AddCors(options =>
             {
-                options.AddDefaultPolicy(builder =>
+                options.AddPolicy(DefaultCorsPolicyName, builder =>
                 {
                     builder
                         .WithOrigins(
@@ -186,7 +188,7 @@ namespace PBL6.Hreo
             app.UseCorrelationId();
             app.UseStaticFiles();
             app.UseRouting();
-            app.UseCors();
+            app.UseCors(DefaultCorsPolicyName);
             app.UseAuthentication();
             app.UseAbpRequestLocalization();
             app.UseAuthorization();
