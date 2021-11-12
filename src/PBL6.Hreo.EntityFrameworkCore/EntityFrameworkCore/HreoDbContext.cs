@@ -31,6 +31,10 @@ namespace PBL6.Hreo.EntityFrameworkCore
 
         public DbSet<FileInformation> FileImformations { get; set; }
 
+        public DbSet<Device> Devices { get; set; }
+
+        public DbSet<NotificationUser> NotificationUsers { get; set; }
+
         public HreoDbContext(DbContextOptions<HreoDbContext> options) 
             : base(options)
         {

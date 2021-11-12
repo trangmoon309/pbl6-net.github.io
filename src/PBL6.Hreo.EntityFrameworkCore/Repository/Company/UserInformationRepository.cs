@@ -7,6 +7,7 @@ using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace PBL6.Hreo.Repository
 {
@@ -20,6 +21,11 @@ namespace PBL6.Hreo.Repository
         public IQueryable<UserInformation> GetList()
         {
             return GetQueryable().Include(x => x.Branch).ThenInclude(y => y.Company);
+        }
+
+        public async Task<UserInformation> GetByUserId(Guid userId)
+        {
+            return await GetQueryable().Where(x => x.UserId.Equals(userId)).Include(x => x.Branch).ThenInclude(y => y.Company).FirstOrDefaultAsync();
         }
     }
 }

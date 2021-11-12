@@ -8,10 +8,8 @@ using Volo.Abp.Domain.Repositories;
 
 namespace PBL6.Hreo.Repository
 {
-    public interface IUserInformationRepository : IRepository<UserInformation, Guid>
+    public interface INotificationUserRepository : IRepository<NotificationUser, Guid>
     {
-        IQueryable<UserInformation> GetList();
-
-        Task<UserInformation> GetByUserId(Guid userId);
+        IQueryable<NotificationUser> GetList();
     }
 }

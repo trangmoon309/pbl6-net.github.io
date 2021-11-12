@@ -88,6 +88,12 @@ namespace PBL6.Hreo
             // File
             CreateMap<FileInformation, FileInformationModel>(MemberList.None);
             CreateMap<CreateUpdateFileInformationDto, FileInformation>(MemberList.None);
+
+            CreateMap<Device, DeviceResponse>(MemberList.None);
+            CreateMap<DeviceRequest, Device>(MemberList.None);
+
+            CreateMap<NotificationUser, NotificationUserResponse>(MemberList.None);
+            CreateMap<NotificationUserRequest, NotificationUser>(MemberList.None);
         }
     }
 }

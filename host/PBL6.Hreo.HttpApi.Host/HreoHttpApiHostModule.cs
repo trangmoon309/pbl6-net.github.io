@@ -34,6 +34,8 @@ using System.Text.Json.Serialization;
 using Volo.Abp.BlobStoring;
 using Volo.Abp.BlobStoring.FileSystem;
 using Azure.Storage.Blobs;
+using Greenglobal.Erp.Services;
+using Greenglobal.Erp;
 
 namespace PBL6.Hreo
 {
@@ -165,6 +167,8 @@ namespace PBL6.Hreo
                     });
                 });
             });
+
+            context.Services.AddSingleton<ITokenManager, TokenManager>();
         }
 
         public override void OnApplicationInitialization(ApplicationInitializationContext context)

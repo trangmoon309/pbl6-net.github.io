@@ -65,6 +65,29 @@ namespace PBL6.Hreo.Services
             };
         }
 
+        public UserResponse GetCurrentUser()
+        {
+            try
+            {
+                var result = new UserResponse();
+
+                if(_currentUser.Id.HasValue)
+                {
+                    var user = _repository.GetById(_currentUser.Id.Value);
+
+                    if(user != null)
+                    {
+                        result = ObjectMapper.Map<User, UserResponse>(user.FirstOrDefault());
+                    }
+                }
+                return result;
+            }
+            catch(Exception e)
+            {
+                throw e;
+            }
+        }
+
         public async Task<PagedResultDto<UserResponse>> GetListAsync(SearchUserRequest searchRequest, PagedAndSortedResultRequestDto pageRequest)
         {
             try

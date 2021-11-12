@@ -11,6 +11,10 @@ namespace PBL6.Hreo.Entities
     {
         public Guid UserId { get; set; }
 
+        public Guid AvatarId { get; set; }
+
+        public Guid CVId { get; set; }
+
         public Guid? BranchId { get; set; }
 
         public string WorkAddress { get; set; }

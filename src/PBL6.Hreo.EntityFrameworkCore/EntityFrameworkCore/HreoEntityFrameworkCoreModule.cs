@@ -38,6 +38,9 @@ namespace PBL6.Hreo.EntityFrameworkCore
                 options.AddRepository<InterestedPost, InterestedPostRepository>();
 
                 options.AddRepository<FileInformation, FileInformationRepository>();
+
+                options.AddRepository<Device, DeviceRepository>();
+                options.AddRepository<NotificationUser, NotificationUserRepository>();
             });
         }
     }

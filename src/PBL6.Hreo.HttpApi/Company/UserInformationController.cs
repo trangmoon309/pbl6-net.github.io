@@ -57,5 +57,36 @@ namespace PBL6.Hreo.Controllers
             var result = await _service.GetAsync(id);
             return Ok(result);
         }
+
+
+        [HttpGet]
+        [Route("by-user/{userId}")]
+        public async Task<IActionResult> GetByUserAsync(Guid userId)
+        {
+            try
+            {
+                var result = await _service.GetByUserId(userId);
+                return Ok(result);
+            }
+            catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("current-user")]
+        public async Task<IActionResult> GetCurrentUserAsync()
+        {
+            try
+            {
+                var result = await _service.GetCurrentUserInformation();
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
     }
 }
