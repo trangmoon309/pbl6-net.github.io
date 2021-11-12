@@ -21,5 +21,12 @@ namespace PBL6.Hreo.Repository
             var x = await GetQueryableAsync();
             return x.Include(x => x.UserRoles).ThenInclude(x => x.Role);
         }
+
+        public IQueryable<User> GetById(Guid id)
+        {
+            return GetQueryable().Where(x => !x.IsDeleted && x.Id.Equals(id))
+                .Include(x => x.UserRoles).ThenInclude(x => x.Role)
+                .AsNoTracking();
+        }
     }
 }

@@ -11,6 +11,9 @@
     <PackageReference Include="Azure.Storage.Blobs" Version="12.10.0" />
     <PackageReference Include="EPPlus" Version="4.5.3.3" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.11" />
+    <PackageReference Include="Refit" Version="6.1.15" />
+    <PackageReference Include="Refit.HttpClientFactory" Version="6.1.15" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.14.1" />
     <PackageReference Include="Volo.Abp.AutoMapper" Version="4.4.3" />
     <PackageReference Include="Volo.Abp.BlobStoring" Version="4.4.3" />
     <PackageReference Include="Volo.Abp.BlobStoring.FileSystem" Version="4.4.3" />

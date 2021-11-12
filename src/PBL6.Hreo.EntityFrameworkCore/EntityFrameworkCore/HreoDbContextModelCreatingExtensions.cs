@@ -87,6 +87,18 @@ namespace PBL6.Hreo.EntityFrameworkCore
                 b.ToTable("FileInformations", "file");
                 b.ConfigureByConvention();
             });
+
+            builder.Entity<Device>(b =>
+            {
+                b.ToTable("Devices", "notification");
+                b.ConfigureByConvention();
+            });
+
+            builder.Entity<NotificationUser>(b =>
+            {
+                b.ToTable("NotificationUsers", "notification");
+                b.ConfigureByConvention();
+            });
         }
     }
 }

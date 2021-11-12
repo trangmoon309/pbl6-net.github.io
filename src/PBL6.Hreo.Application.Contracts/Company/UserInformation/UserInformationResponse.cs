@@ -8,7 +8,13 @@ namespace PBL6.Hreo.Models
 {
     public class UserInformationResponse : FullAuditedEntityDto<Guid>
     {
+        public UserResponse UserAbp { get; set; }
+
         public Guid UserId { get; set; }
+
+        public Guid AvatarId { get; set; }
+
+        public Guid CVId { get; set; }
 
         public Guid? BranchId { get; set; }
 
@@ -28,5 +34,6 @@ namespace PBL6.Hreo.Models
         public InvitationPostStatus IsInvitedForPost { get; set; }
 
         public BranchResponse Branch { get; set; }
+
     }
 }

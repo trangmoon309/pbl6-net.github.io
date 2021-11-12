@@ -31,5 +31,13 @@ namespace PBL6.Hreo.Controllers
             var ressult = await _service.GetAsync(id);
             return Ok(ressult);
         }
+
+        [HttpGet]
+        [Route("me")]
+        public IActionResult GetCurrentUser()
+        {
+            var result = _service.GetCurrentUser();
+            return Ok(result);
+        }
     }
 }

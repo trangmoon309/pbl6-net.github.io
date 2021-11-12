@@ -11,5 +11,7 @@ namespace PBL6.Hreo.Repository
     public interface IUserRepository : IRepository<User, Guid>
     {
         Task<IQueryable<User>> GetList();
+
+        IQueryable<User> GetById(Guid id);
     }
 }
