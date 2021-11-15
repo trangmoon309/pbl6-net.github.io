@@ -128,5 +128,70 @@ namespace PBL6.Hreo.Services
                 throw e;
             }
         }
+
+        public override async Task<UserInformationResponse> UpdateAsync(Guid id, UserInformationRequest input)
+        {
+            try
+            {
+                var user = _userRepository.GetById(input.UserId);
+                var response = await base.UpdateAsync(id, input);
+
+                if (user != null && user.Any())
+                {
+                    var userInformation = await _repository.GetByUserId(input.UserId);
+                    var userAbp = await _asyncQueryableExecuter.FirstOrDefaultAsync(user);
+                    var userAbpResponse = ObjectMapper.Map<User, UserResponse>(userAbp);
+
+                    if (userInformation != null)
+                    {
+                        response = ObjectMapper.Map<UserInformation, UserInformationResponse>(userInformation);
+                    }
+
+                    response.UserAbp = userAbpResponse;
+                    return response;
+                }
+
+                else
+                {
+                    throw new UserFriendlyException("Người dùng đã bị xóa hoặc không tồn tại!");
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public override async Task<UserInformationResponse> CreateAsync(UserInformationRequest input)
+        {
+            try
+            {
+                var user = _userRepository.GetById(input.UserId);
+                var response = await base.CreateAsync(input);
+
+                if (user != null && user.Any())
+                {
+                    var userInformation = await _repository.GetByUserId(input.UserId);
+                    var userAbp = await _asyncQueryableExecuter.FirstOrDefaultAsync(user);
+                    var userAbpResponse = ObjectMapper.Map<User, UserResponse>(userAbp);
+
+                    if (userInformation != null)
+                    {
+                        response = ObjectMapper.Map<UserInformation, UserInformationResponse>(userInformation);
+                    }
+
+                    response.UserAbp = userAbpResponse;
+                    return response;
+                }
+                else
+                {
+                    throw new UserFriendlyException("Người dùng đã bị xóa hoặc không tồn tại!");
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }

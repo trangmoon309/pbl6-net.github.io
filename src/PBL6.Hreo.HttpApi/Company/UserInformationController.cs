@@ -32,15 +32,29 @@ namespace PBL6.Hreo.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateAsync(UserInformationRequest request)
         {
-            var createdTest = await _service.CreateAsync(request);
-            return Ok(createdTest);
+            try
+            {
+                var createdTest = await _service.CreateAsync(request);
+                return Ok(createdTest);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpPut]
         public async Task<IActionResult> UpdateAsync(Guid id, UserInformationRequest request)
         {
-            var createdTest = await _service.UpdateAsync(id, request);
-            return Ok(createdTest);
+            try
+            {
+                var createdTest = await _service.UpdateAsync(id, request);
+                return Ok(createdTest);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpDelete]
