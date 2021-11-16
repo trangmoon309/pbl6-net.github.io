@@ -43,13 +43,21 @@ namespace PBL6.Hreo.Services
         public override async Task<PagedResultDto<UserInformationResponse>> GetListAsync(PagedAndSortedResultRequestDto input)
         {
             var query = _repository.GetList();
-            
+            var users = await _userRepository.GetList();
+            var userList = ObjectMapper.Map <List<User>, List<UserResponse>>(_asyncQueryableExecuter.ToListAsync(users).Result);
+
             var toList = await _asyncQueryableExecuter.ToListAsync(query);
             var count = toList.Count();
 
             toList = toList.Skip(input.SkipCount).Take(input.MaxResultCount).ToList();
 
             var responses = ObjectMapper.Map<List<UserInformation>, List<UserInformationResponse>>(toList);
+            foreach (var item in responses)
+            {
+                var userAbp = userList.FirstOrDefault(x => x.Id.Equals(item.UserId));
+                item.UserAbp = userAbp;
+            }
+
             return new PagedResultDto<UserInformationResponse>(count, responses);
         }
 
