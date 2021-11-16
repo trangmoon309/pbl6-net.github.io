@@ -41,6 +41,9 @@ namespace PBL6.Hreo.EntityFrameworkCore
 
                 options.AddRepository<Device, DeviceRepository>();
                 options.AddRepository<NotificationUser, NotificationUserRepository>();
+
+                options.AddRepository<UserResume, UserResumeRepository>();
+
             });
         }
     }

@@ -99,6 +99,13 @@ namespace PBL6.Hreo.EntityFrameworkCore
                 b.ToTable("NotificationUsers", "notification");
                 b.ConfigureByConvention();
             });
+
+
+            builder.Entity<UserResume>(b =>
+            {
+                b.ToTable("UserResumes", "user");
+                b.ConfigureByConvention();
+            });
         }
     }
 }

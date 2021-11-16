@@ -35,6 +35,9 @@ namespace PBL6.Hreo.EntityFrameworkCore
 
         public DbSet<NotificationUser> NotificationUsers { get; set; }
 
+        public DbSet<UserResume> UserResumes { get; set; }
+
+
         public HreoDbContext(DbContextOptions<HreoDbContext> options) 
             : base(options)
         {

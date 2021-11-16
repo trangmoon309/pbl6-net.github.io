@@ -38,5 +38,7 @@ namespace PBL6.Hreo.EntityFrameworkCore
         public DbSet<Device> Devices { get; set; }
 
         public DbSet<NotificationUser> NotificationUsers { get; set; }
+
+        public DbSet<UserResume> UserResumes { get; set; }
     }
 }
