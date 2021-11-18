@@ -7,9 +7,9 @@ using Volo.Abp.AspNetCore.Mvc;
 
 namespace PBL6.Hreo
 {
-    [IgnoreAntiforgeryToken]
-    [ErpAuthorizationFilter]
-    [RemoteService]
+    //[IgnoreAntiforgeryToken]
+    //[ErpAuthorizationFilter]
+    //[RemoteService]
     public abstract class HreoController : AbpController
     {
         protected HreoController() 

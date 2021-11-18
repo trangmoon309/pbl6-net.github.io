@@ -28,16 +28,22 @@ namespace PBL6.Hreo.Services
         private readonly IAsyncQueryableExecuter _asyncQueryableExecuter;
         private readonly IPostRepository _postRepository;
         private readonly IUserInformationRepository _userInforRepository;
+        private readonly IUserInformationAppService _userInforAppService;
+        private readonly IUserRepository _userRepository;
 
         public InvitationPostAppService(IInvitationPostRepository repository,
             IAsyncQueryableExecuter asyncQueryableExecuter,
-            IPostRepository postRepository, 
-            IUserInformationRepository userInforRepository) : base(repository)
+            IPostRepository postRepository,
+            IUserInformationRepository userInforRepository,
+            IUserInformationAppService userInforAppService, 
+            IUserRepository userRepository) : base(repository)
         {
             _repository = repository;
             _asyncQueryableExecuter = asyncQueryableExecuter;
             _postRepository = postRepository;
             _userInforRepository = userInforRepository;
+            _userInforAppService = userInforAppService;
+            _userRepository = userRepository;
         }
 
         // Xem danh sách thí sinh đủ điều kiện của bài post để HR xem và mời
@@ -68,11 +74,16 @@ namespace PBL6.Hreo.Services
                 var total = userList.Count();
                 var result = ObjectMapper.Map<List<UserInformation>, List<UserInformationResponse>>(userList);
 
+                var userAbp = await _userRepository.GetList();
+                var userAbpList = await _asyncQueryableExecuter.ToListAsync(userAbp);
+                var userAbpResponse = ObjectMapper.Map<List<User>, List<UserResponse>>(userAbpList);
+
                 result = result.Skip(pageRequest.SkipCount).Take(pageRequest.MaxResultCount).ToList();
 
                 result.ForEach(x =>
                 {
-                    if(query != null)
+                    x.UserAbp = userAbpResponse.FirstOrDefault(y => y.Id.Equals(x.UserId));
+                    if (query != null)
                     {
                         var invited = query.FirstOrDefault(y => y.ApplicantId.Equals(x.Id));
                         if (invited != null) x.IsInvitedForPost = invited.InvitationPostStatus;
@@ -89,6 +100,35 @@ namespace PBL6.Hreo.Services
             }
         }
 
+        // Xem danh sách lời mời của 1 applicant
+        public async Task<List<InvitationPostResponse>> GetListByApplicantIdCondittion(Guid applicantId)
+        {
+            try
+            {
+
+                var query = _repository.GetList();
+
+                query = query.Where(x => x.ApplicantId.Equals(applicantId)).OrderByDescending(x => x.CreationTime);
+
+                var toList = await _asyncQueryableExecuter.ToListAsync(query);
+                var result = ObjectMapper.Map<List<InvitationPost>, List<InvitationPostResponse>>(toList);
+
+                var userAbp = await _asyncQueryableExecuter.FirstOrDefaultAsync(_userRepository.GetById(result.FirstOrDefault().Applicant.UserId));
+                var userAbpResponse = ObjectMapper.Map<User, UserResponse>(userAbp);
+
+                result.ForEach(x =>
+                {
+                    x.Applicant.UserAbp = userAbpResponse;
+                });
+
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         // B2: Send-notification
         // Nếu Thí sinh chấp nhận thì update status
         public async Task<List<InvitationPostResponse>> CreateMultiple(List<InvitationPostRequest> request)
@@ -97,6 +137,10 @@ namespace PBL6.Hreo.Services
             {
 
                 var entities = ObjectMapper.Map<List<InvitationPostRequest>, List<InvitationPost>>(request);
+
+                var userAbp = await _userRepository.GetList();
+                var userAbpList = await _asyncQueryableExecuter.ToListAsync(userAbp);
+                var userAbpResponse = ObjectMapper.Map<List<User>, List<UserResponse>>(userAbpList);
 
                 entities.ForEach(x => {
                     EntityHelper.TrySetId(x, GuidGenerator.Create);
@@ -114,6 +158,7 @@ namespace PBL6.Hreo.Services
                 {
                     x.Post = ObjectMapper.Map<Post, PostResponse>(post);
                     x.Applicant = ObjectMapper.Map<UserInformation, UserInformationResponse>(userInfors.FirstOrDefault(y => y.Id.Equals(x.ApplicantId)));
+                    x.Applicant.UserAbp = userAbpResponse.FirstOrDefault(y => y.Id.Equals(x.Applicant.UserId));
                 });
 
                 return responses;

@@ -46,14 +46,14 @@ namespace PBL6.Hreo.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync(InterestedPostRequest request)
+        public async Task<IActionResult> CreateAsync([FromBody]InterestedPostRequest request)
         {
             var createdInterested_Post = await _service.CreateAsync(request);
             return Ok(createdInterested_Post);
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateAsync(Guid id, InterestedPostRequest request)
+        public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] InterestedPostRequest request)
         {
             var updatedInterested_Post = await _service.UpdateAsync(id, request);
             return Ok(updatedInterested_Post);

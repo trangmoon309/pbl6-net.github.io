@@ -29,18 +29,21 @@ namespace PBL6.Hreo.Services
         private readonly IPostRepository _postRepository;
         private readonly IUserInformationRepository _userInforRepository;
         private readonly IInterestedPostRepository _interesPostRepository;
+        private readonly IUserRepository _userRepository;
 
         public ApplicantPostAppService(IApplicantPostRepository repository,
             IAsyncQueryableExecuter asyncQueryableExecuter,
             IPostRepository postRepository,
-            IUserInformationRepository userInforRepository, 
-            IInterestedPostRepository interesPostRepository) : base(repository)
+            IUserInformationRepository userInforRepository,
+            IInterestedPostRepository interesPostRepository,
+            IUserRepository userRepository) : base(repository)
         {
             _repository = repository;
             _asyncQueryableExecuter = asyncQueryableExecuter;
             _postRepository = postRepository;
             _userInforRepository = userInforRepository;
             _interesPostRepository = interesPostRepository;
+            _userRepository = userRepository;
         }
 
         // Danh sách ứng viên: Là những ứng viên đã submit CV của họ lên
@@ -50,6 +53,7 @@ namespace PBL6.Hreo.Services
             {
                 var userInfors = _userInforRepository.GetList();
                 var interestPost = _interesPostRepository.GetByPostId(postId);
+
 
                 interestPost = interestPost.Where(x => x.InterestedPostStatus.ToString().Equals(InterestedPostStatus.SUBMITTED.ToString()));
 
@@ -65,7 +69,16 @@ namespace PBL6.Hreo.Services
                 var userList = await _asyncQueryableExecuter.ToListAsync(userInfors);
                 var total = toList.Count();
 
+                var userAbp = await _userRepository.GetList();
+                var userAbpList = await _asyncQueryableExecuter.ToListAsync(userAbp);
+                var userAbpResponse = ObjectMapper.Map<List<User>, List<UserResponse>>(userAbpList);
+
                 var result = ObjectMapper.Map<List<UserInformation>, List<UserInformationResponse>>(userList);
+
+                result.ForEach(x =>
+                {
+                    x.UserAbp = userAbpResponse.FirstOrDefault(y => y.Id.Equals(x.UserId));
+                });
 
                 result = result.Skip(pageRequest.SkipCount).Take(pageRequest.MaxResultCount).ToList();
 
@@ -96,6 +109,14 @@ namespace PBL6.Hreo.Services
                 var result = ObjectMapper.Map<List<ApplicantPost>, List<ApplicantPostResponse>>(toList);
 
                 result = result.Skip(pageRequest.SkipCount).Take(pageRequest.MaxResultCount).ToList();
+                var userAbp = await _userRepository.GetList();
+                var userAbpList = await _asyncQueryableExecuter.ToListAsync(userAbp);
+                var userAbpResponse = ObjectMapper.Map<List<User>, List<UserResponse>>(userAbpList);
+
+                result.ForEach(x =>
+                {
+                    x.UserInformation.UserAbp = userAbpResponse.FirstOrDefault(y => y.Id.Equals(x.UserInformation.UserId));
+                });
 
                 return new PagedResultDto<ApplicantPostResponse>(total, result);
             }

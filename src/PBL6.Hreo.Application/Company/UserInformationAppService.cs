@@ -95,6 +95,40 @@ namespace PBL6.Hreo.Services
             }
         }
 
+        public async Task<UserInformationResponse> GetByUserInforId(Guid userId)
+        {
+            try
+            {
+                var userInformation = await _repository.GetByUserId(userId);
+
+                var response = new UserInformationResponse();
+
+                if (userInformation != null)
+                {
+                    var user = _userRepository.GetById(userInformation.UserId);
+                    var userAbp = await _asyncQueryableExecuter.FirstOrDefaultAsync(user);
+                    var userAbpResponse = ObjectMapper.Map<User, UserResponse>(userAbp);
+
+                    if (userInformation != null)
+                    {
+                        response = ObjectMapper.Map<UserInformation, UserInformationResponse>(userInformation);
+                    }
+
+                    response.UserAbp = userAbpResponse;
+                    return response;
+                }
+
+                else
+                {
+                    throw new UserFriendlyException("Người dùng đã bị xóa hoặc không tồn tại!");
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public async Task<UserInformationResponse> GetCurrentUserInformation()
         {
             try

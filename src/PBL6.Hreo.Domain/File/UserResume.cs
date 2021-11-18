@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FileService;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
@@ -9,10 +10,14 @@ namespace PBL6.Hreo.Entities
 {
     public class UserResume : FullAuditedAggregateRoot<Guid>
     {
-        public string Name { get; set; }
+        public Guid UserId { get; set; }
 
-        public string Description { get; set; }
+        public string ResumeName { get; set; }
 
-        public string LogoUrl { get; set; }
+        public string JobTitle { get; set; }
+
+        public Guid FileInformationId { get; set; }
+
+        public FileInformation FileInformation { get; set; }
     }
 }
