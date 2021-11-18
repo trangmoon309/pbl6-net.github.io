@@ -38,6 +38,15 @@ namespace PBL6.Hreo.Controllers
             return Ok(postList);
         }
 
+        // Lấy danh sách lời mời theo ứng viên
+        [HttpGet]
+        [Route("by-applicant/{userInformationId}")]
+        public async Task<IActionResult> GetListByApplicant(Guid userInformationId)
+        {
+            var postList = await _service.GetListByApplicantIdCondittion(userInformationId);
+            return Ok(postList);
+        }
+
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> GetAsync(Guid id)

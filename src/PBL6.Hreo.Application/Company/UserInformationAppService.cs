@@ -43,13 +43,21 @@ namespace PBL6.Hreo.Services
         public override async Task<PagedResultDto<UserInformationResponse>> GetListAsync(PagedAndSortedResultRequestDto input)
         {
             var query = _repository.GetList();
-            
+            var users = await _userRepository.GetList();
+            var userList = ObjectMapper.Map <List<User>, List<UserResponse>>(_asyncQueryableExecuter.ToListAsync(users).Result);
+
             var toList = await _asyncQueryableExecuter.ToListAsync(query);
             var count = toList.Count();
 
             toList = toList.Skip(input.SkipCount).Take(input.MaxResultCount).ToList();
 
             var responses = ObjectMapper.Map<List<UserInformation>, List<UserInformationResponse>>(toList);
+            foreach (var item in responses)
+            {
+                var userAbp = userList.FirstOrDefault(x => x.Id.Equals(item.UserId));
+                item.UserAbp = userAbp;
+            }
+
             return new PagedResultDto<UserInformationResponse>(count, responses);
         }
 
@@ -82,6 +90,40 @@ namespace PBL6.Hreo.Services
                 }
             }
             catch(Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public async Task<UserInformationResponse> GetByUserInforId(Guid userId)
+        {
+            try
+            {
+                var userInformation = await _repository.GetByUserId(userId);
+
+                var response = new UserInformationResponse();
+
+                if (userInformation != null)
+                {
+                    var user = _userRepository.GetById(userInformation.UserId);
+                    var userAbp = await _asyncQueryableExecuter.FirstOrDefaultAsync(user);
+                    var userAbpResponse = ObjectMapper.Map<User, UserResponse>(userAbp);
+
+                    if (userInformation != null)
+                    {
+                        response = ObjectMapper.Map<UserInformation, UserInformationResponse>(userInformation);
+                    }
+
+                    response.UserAbp = userAbpResponse;
+                    return response;
+                }
+
+                else
+                {
+                    throw new UserFriendlyException("Người dùng đã bị xóa hoặc không tồn tại!");
+                }
+            }
+            catch (Exception e)
             {
                 throw e;
             }

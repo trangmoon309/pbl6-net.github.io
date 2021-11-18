@@ -55,14 +55,14 @@ namespace PBL6.Hreo.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync(List<SendTestToApplicationRequest> request)
+        public async Task<IActionResult> CreateAsync([FromBody] List<SendTestToApplicationRequest> request)
         {
             var createdApplicant_Post = await _service.CreateMultiple(request);
             return Ok(createdApplicant_Post);
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateAsync(Guid id, ApplicantPostRequest request)
+        public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] ApplicantPostRequest request)
         {
             var updatedApplicant_Post = await _service.UpdateAsync(id, request);
             return Ok(updatedApplicant_Post);

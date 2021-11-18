@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PBL6.Hreo.EntityFrameworkCore;
@@ -10,9 +11,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace PBL6.Hreo.Migrations
 {
     [DbContext(typeof(HreoHttpApiHostMigrationsDbContext))]
-    partial class HreoHttpApiHostMigrationsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211116162913_Edited_UserResume")]
+    partial class Edited_UserResume
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -946,7 +948,10 @@ namespace PBL6.Hreo.Migrations
                         .HasColumnType("text")
                         .HasColumnName("ExtraProperties");
 
-                    b.Property<Guid>("FileInformationId")
+                    b.Property<Guid>("FileId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("FileInformationId")
                         .HasColumnType("uuid");
 
                     b.Property<bool>("IsDeleted")
@@ -1090,9 +1095,7 @@ namespace PBL6.Hreo.Migrations
                 {
                     b.HasOne("FileService.FileInformation", "FileInformation")
                         .WithMany()
-                        .HasForeignKey("FileInformationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FileInformationId");
 
                     b.Navigation("FileInformation");
                 });

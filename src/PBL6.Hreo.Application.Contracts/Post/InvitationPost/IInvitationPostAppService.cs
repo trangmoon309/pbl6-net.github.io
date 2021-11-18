@@ -21,5 +21,7 @@ namespace PBL6.Hreo.Services
         Task<List<InvitationPostResponse>> CreateMultiple(List<InvitationPostRequest> request);
 
         Task<InvitationPostResponse> UpdateStatus(Guid id, InvitationPostStatus status);
+
+        Task<List<InvitationPostResponse>> GetListByApplicantIdCondittion(Guid applicantId);
     }
 }
