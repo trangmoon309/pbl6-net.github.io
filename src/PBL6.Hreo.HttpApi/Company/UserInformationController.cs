@@ -30,7 +30,7 @@ namespace PBL6.Hreo.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync(UserInformationRequest request)
+        public async Task<IActionResult> CreateAsync([FromBody]UserInformationRequest request)
         {
             try
             {
@@ -44,7 +44,7 @@ namespace PBL6.Hreo.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateAsync(Guid id, UserInformationRequest request)
+        public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] UserInformationRequest request)
         {
             try
             {
