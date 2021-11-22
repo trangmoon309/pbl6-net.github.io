@@ -38,14 +38,14 @@ namespace PBL6.Hreo.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync(NotificationUserRequest request)
+        public async Task<IActionResult> CreateAsync([FromBody] NotificationUserRequest request)
         {
             var createdTest = await _service.CreateAsync(request);
             return Ok(createdTest);
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateAsync(Guid id, NotificationUserRequest request)
+        public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] NotificationUserRequest request)
         {
             var createdTest = await _service.UpdateAsync(id, request);
             return Ok(createdTest);

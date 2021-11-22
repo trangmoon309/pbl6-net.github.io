@@ -63,7 +63,7 @@ namespace PBL6.Hreo.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateAsync(Guid id, InvitationPostRequest request)
+        public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] InvitationPostRequest request)
         {
             var updatedInvitation_Post = await _service.UpdateAsync(id, request);
             return Ok(updatedInvitation_Post);

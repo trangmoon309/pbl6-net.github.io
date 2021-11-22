@@ -46,7 +46,7 @@ namespace PBL6.Hreo.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync(TestRequest request)
+        public async Task<IActionResult> CreateAsync([FromBody] TestRequest request)
         {
             var createdTest = await _service.CreateAsync(request);
             return Ok(createdTest);
