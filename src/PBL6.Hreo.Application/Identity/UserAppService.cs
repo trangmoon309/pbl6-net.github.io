@@ -130,6 +130,8 @@ namespace PBL6.Hreo.Services
 
                 var created = await UserManager.CreateAsync(newUser, request.Password);
 
+                if (!created.Succeeded) throw new Exception(created.Errors.Select(x => x.Description).ToList().JoinAsString(","));
+
                 var result = await UserManager.AddToRolesAsync(newUser, request.Roles.AsEnumerable());
 
                 var roles = await _roleRepository.GetListAsync();

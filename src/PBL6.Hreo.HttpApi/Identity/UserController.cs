@@ -44,8 +44,15 @@ namespace PBL6.Hreo.Controllers
         [Route("create")]
         public async Task<IActionResult> CreateUserAsync([FromBody]UserRequest request)
         {
-            var result = await _service.SignUpCustom(request);
-            return Ok(result);
+            try
+            {
+                var result = await _service.SignUpCustom(request);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }
