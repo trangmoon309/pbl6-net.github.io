@@ -17,6 +17,8 @@ namespace PBL6.Hreo.Services
     {
         Task<PagedResultDto<UserResponse>> GetListAsync(SearchUserRequest searchRequest, PagedAndSortedResultRequestDto pageRequest);
 
-        UserResponse GetCurrentUser();
+        Task<UserResponse> GetCurrentUser();
+
+        Task<UserResponse> SignUpCustom(UserRequest request);
     }
 }

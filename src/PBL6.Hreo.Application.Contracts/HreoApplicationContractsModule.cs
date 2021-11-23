@@ -3,6 +3,7 @@ using Volo.Abp.Modularity;
 using Volo.Abp.Authorization;
 using Volo.Abp.BlobStoring;
 using Volo.Abp.BlobStoring.FileSystem;
+using Volo.Abp.Identity;
 
 namespace PBL6.Hreo
 {
@@ -11,7 +12,8 @@ namespace PBL6.Hreo
         typeof(AbpDddApplicationContractsModule),
         typeof(AbpAuthorizationModule),
         typeof(AbpBlobStoringModule),
-        typeof(AbpBlobStoringFileSystemModule)
+        typeof(AbpBlobStoringFileSystemModule),
+        typeof(AbpIdentityApplicationContractsModule)
         )]
     public class HreoApplicationContractsModule : AbpModule
     {

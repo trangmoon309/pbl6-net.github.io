@@ -19,7 +19,6 @@ namespace PBL6.Hreo.Models
         [EmailAddress]
         public string Email { get; set; }
        
-        [Required]
-        public List<Guid> Roles { get; set; }
+        public List<string> Roles { get; set; }
     }
 }

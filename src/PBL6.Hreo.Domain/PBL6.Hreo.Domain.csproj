@@ -10,6 +10,7 @@
   <ItemGroup>
     <PackageReference Include="Volo.Abp.BlobStoring" Version="4.4.3" />
     <PackageReference Include="Volo.Abp.Ddd.Domain" Version="4.4.3" />
+    <PackageReference Include="Volo.Abp.Identity.Domain" Version="4.4.3" />
     <ProjectReference Include="..\PBL6.Hreo.Domain.Shared\PBL6.Hreo.Domain.Shared.csproj" />
   </ItemGroup>
 

@@ -34,9 +34,17 @@ namespace PBL6.Hreo.Controllers
 
         [HttpGet]
         [Route("me")]
-        public IActionResult GetCurrentUser()
+        public async Task<IActionResult> GetCurrentUser()
         {
-            var result = _service.GetCurrentUser();
+            var result = await _service.GetCurrentUser();
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("create")]
+        public async Task<IActionResult> CreateUserAsync([FromBody]UserRequest request)
+        {
+            var result = await _service.SignUpCustom(request);
             return Ok(result);
         }
     }

@@ -14,6 +14,8 @@ using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Data;
+using Volo.Abp.Domain.Entities;
+using Volo.Abp.Identity;
 using Volo.Abp.Linq;
 using Volo.Abp.Users;
 
@@ -37,7 +39,10 @@ namespace PBL6.Hreo.Services
         private readonly IAsyncQueryableExecuter _asyncQueryableExecuter;
         private readonly IDataFilter _dataFilter;
         private readonly IConfiguration _config;
-        private readonly JsonSerializerSettings _toSnakeCase;
+        protected IdentityUserManager UserManager { get; }
+        protected IdentityRoleManager RoleManager { get; }
+        protected IIdentityRoleRepository _roleRepository { get; }
+
 
         public UserAppService(
             ICurrentUser currentUser,
@@ -45,8 +50,10 @@ namespace PBL6.Hreo.Services
             IUserRoleRepository userRoleRepository,
             IAsyncQueryableExecuter asyncQueryableExecuter,
             IDataFilter dataFilter,
-            IConfiguration config
-           ) : base(repository)
+            IConfiguration config,
+            IdentityUserManager userManager,
+            IdentityRoleManager roleManager,
+            IIdentityRoleRepository roleRepository) : base(repository)
         {
             _currentUser = currentUser;
             _repository = repository;
@@ -54,18 +61,12 @@ namespace PBL6.Hreo.Services
             _asyncQueryableExecuter = asyncQueryableExecuter;
             _dataFilter = dataFilter;
             _config = config;
-
-            _toSnakeCase = new JsonSerializerSettings
-            {
-                ContractResolver = new DefaultContractResolver
-                {
-                    NamingStrategy = new SnakeCaseNamingStrategy { ProcessDictionaryKeys = true }
-                },
-                Formatting = Formatting.Indented
-            };
+            UserManager = userManager;
+            RoleManager = roleManager;
+            _roleRepository = roleRepository;
         }
 
-        public UserResponse GetCurrentUser()
+        public async Task<UserResponse> GetCurrentUser()
         {
             try
             {
@@ -73,11 +74,11 @@ namespace PBL6.Hreo.Services
 
                 if(_currentUser.Id.HasValue)
                 {
-                    var user = _repository.GetById(_currentUser.Id.Value);
+                    var user = await UserManager.GetByIdAsync(_currentUser.Id.Value);
 
                     if(user != null)
                     {
-                        result = ObjectMapper.Map<User, UserResponse>(user.FirstOrDefault());
+                        result = ObjectMapper.Map<IdentityUser, UserResponse>(user);
                     }
                 }
                 return result;
@@ -113,6 +114,31 @@ namespace PBL6.Hreo.Services
 
                     return new PagedResultDto<UserResponse>(total, items);
                 }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public async Task<UserResponse> SignUpCustom(UserRequest request)
+        {
+            try
+            {
+                var newUser = ObjectMapper.Map<UserRequest, IdentityUser>(request);
+                EntityHelper.TrySetId(newUser, GuidGenerator.Create);
+
+                var created = await UserManager.CreateAsync(newUser, request.Password);
+
+                var result = await UserManager.AddToRolesAsync(newUser, request.Roles.AsEnumerable());
+
+                var roles = await _roleRepository.GetListAsync();
+                roles = roles.Where(x => request.Roles.Contains(x.Name.ToLower())).ToList();
+
+                var response = ObjectMapper.Map<IdentityUser, UserResponse>(newUser); 
+                response.Roles = ObjectMapper.Map<List<IdentityRole>, List<RoleResponse>>(roles);
+
+                return response;
             }
             catch (Exception e)
             {

@@ -4,6 +4,7 @@ using Volo.Abp.Modularity;
 using Volo.Abp.Application;
 using Volo.Abp.BlobStoring;
 using Volo.Abp.BlobStoring.FileSystem;
+using Volo.Abp.Identity;
 
 namespace PBL6.Hreo
 {
@@ -13,7 +14,9 @@ namespace PBL6.Hreo
         typeof(AbpDddApplicationModule),
         typeof(AbpAutoMapperModule),
         typeof(AbpBlobStoringModule),
-        typeof(AbpBlobStoringFileSystemModule)
+        typeof(AbpBlobStoringFileSystemModule),
+        typeof(AbpIdentityApplicationModule)
+
         )]
     public class HreoApplicationModule : AbpModule
     {

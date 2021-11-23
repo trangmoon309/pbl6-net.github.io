@@ -8,6 +8,7 @@ using System.ComponentModel;
 using PBL6.Hreo.Models;
 using PBL6.Hreo.Entities;
 using FileService;
+using Volo.Abp.Identity;
 
 namespace PBL6.Hreo
 {
@@ -94,6 +95,13 @@ namespace PBL6.Hreo
 
             CreateMap<NotificationUser, NotificationUserResponse>(MemberList.None);
             CreateMap<NotificationUserRequest, NotificationUser>(MemberList.None);
+
+            CreateMap<IdentityUser, UserResponse>(MemberList.None)
+                 .ForMember(x => x.Roles, y => y.Ignore());
+            CreateMap<UserRequest, IdentityUser>(MemberList.None)
+                 .ForMember(x => x.Roles, y => y.Ignore());
+
+            CreateMap<IdentityRole, RoleResponse>(MemberList.None);
         }
     }
 }

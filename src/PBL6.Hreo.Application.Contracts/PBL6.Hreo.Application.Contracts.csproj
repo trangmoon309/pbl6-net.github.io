@@ -15,6 +15,7 @@
     <PackageReference Include="Volo.Abp.BlobStoring.FileSystem" Version="4.4.3" />
     <PackageReference Include="Volo.Abp.Ddd.Application.Contracts" Version="4.4.3" />
     <PackageReference Include="Volo.Abp.Authorization" Version="4.4.3" />
+    <PackageReference Include="Volo.Abp.Identity.Application.Contracts" Version="4.4.3" />
     <ProjectReference Include="..\PBL6.Hreo.Domain.Shared\PBL6.Hreo.Domain.Shared.csproj" />
   </ItemGroup>
 

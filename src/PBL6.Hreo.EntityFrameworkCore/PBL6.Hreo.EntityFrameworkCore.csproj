@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Volo.Abp.EntityFrameworkCore" Version="4.4.3" />
+    <PackageReference Include="Volo.Abp.Identity.EntityFrameworkCore" Version="4.4.3" />
     <ProjectReference Include="..\PBL6.Hreo.Domain\PBL6.Hreo.Domain.csproj" />
   </ItemGroup>
 
