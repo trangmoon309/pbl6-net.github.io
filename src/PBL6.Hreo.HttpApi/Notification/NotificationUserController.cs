@@ -54,8 +54,15 @@ namespace PBL6.Hreo.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
-            await _service.DeleteAsync(id);
-            return Ok();
+            try
+            {
+                await _service.DeleteAsync(id);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }

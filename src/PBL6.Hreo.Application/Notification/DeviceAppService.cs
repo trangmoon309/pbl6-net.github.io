@@ -4,6 +4,7 @@ using PBL6.Hreo.Repository;
 using PBL6.Hreo.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
@@ -30,6 +31,35 @@ namespace PBL6.Hreo.Services
         {
             _repository = repository;
             _asyncQueryableExecuter = asyncQueryableExecuter;
+        }
+
+        public override async Task<DeviceResponse> CreateAsync(DeviceRequest input)
+        {
+            try
+            {
+                var deviceByUser = _repository.GetByUser(input.UserId);
+
+                if(deviceByUser != null)
+                {
+                    var toList = await _asyncQueryableExecuter.ToListAsync(deviceByUser);
+                    var existToken = toList.FirstOrDefault(x => x.DeviceToken.Equals(input.DeviceToken));
+
+                    if (existToken == null)
+                    {
+                        return await base.CreateAsync(input);
+                    }
+
+                    else return null;
+                }
+                else
+                {
+                    return await base.CreateAsync(input);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
     }
 }

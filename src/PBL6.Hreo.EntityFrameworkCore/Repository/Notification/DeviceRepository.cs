@@ -20,5 +20,10 @@ namespace PBL6.Hreo.Repository
         {
             return GetQueryable().Where(x => !x.IsDeleted);
         }
+
+        public IQueryable<Device> GetByUser(Guid userId)
+        {
+            return GetQueryable().Where(x => !x.IsDeleted && x.UserId.Equals(userId));
+        }
     }
 }

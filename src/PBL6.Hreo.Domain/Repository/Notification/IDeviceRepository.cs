@@ -11,5 +11,7 @@ namespace PBL6.Hreo.Repository
     public interface IDeviceRepository : IRepository<Device, Guid>
     {
         IQueryable<Device> GetList();
+
+        IQueryable<Device> GetByUser(Guid userId);
     }
 }
