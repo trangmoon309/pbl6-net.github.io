@@ -27,7 +27,8 @@ namespace PBL6.Hreo.Repository
 
         public IQueryable<Test> GetList()
         {
-            return GetQueryable().Where(x => !x.IsDeleted);
+            return GetQueryable().Where(x => !x.IsDeleted)
+                .Include(x => x.TestQuestions);
         }
     }
 }

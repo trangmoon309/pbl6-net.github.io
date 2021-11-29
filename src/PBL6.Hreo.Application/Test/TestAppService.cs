@@ -40,9 +40,16 @@ namespace PBL6.Hreo.Services
             _questionRepository = questionRepository;
         }
 
-        public override Task<PagedResultDto<TestResponse>> GetListAsync(PagedAndSortedResultRequestDto input)
+        public override async Task<PagedResultDto<TestResponse>> GetListAsync(PagedAndSortedResultRequestDto input)
         {
-            return base.GetListAsync(input);
+            var list = _repository.GetList();
+            var toList = await _asyncQueryableExecuter.ToListAsync(list);
+
+            var responses = ObjectMapper.Map<List<Test>, List<TestResponse>>(toList);
+            var count = responses.Count();
+            responses = responses.Skip(input.SkipCount).Take(input.MaxResultCount).ToList();
+
+            return new PagedResultDto<TestResponse>(count, responses);
         }
 
         public async Task<PagedResultDto<TestResponse>> GetListByCondittion(SearchTestRequest request, PagedAndSortedResultRequestDto pageRequest)
@@ -98,6 +105,12 @@ namespace PBL6.Hreo.Services
             response.TestQuestions = testQuestionResponses;
 
             return response;
+        }
+
+        public override async Task<TestResponse> GetAsync(Guid id)
+        {
+            var x = await _repository.GetById(id);
+            return ObjectMapper.Map<Test, TestResponse>(x);
         }
 
         public async Task<TestWithQuestionResponse> UpdateWithQuestionsAsync(Guid id, TestWithQuestionRequest input)

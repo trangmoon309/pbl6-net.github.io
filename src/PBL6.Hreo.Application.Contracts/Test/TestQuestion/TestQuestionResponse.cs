@@ -14,7 +14,5 @@ namespace PBL6.Hreo.Models
         public string Answers { get; set; }
 
         public int Result { get; set; }
-
-        public TestResponse Test { get; set; }
     }
 }

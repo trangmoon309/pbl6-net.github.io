@@ -17,5 +17,7 @@ namespace PBL6.Hreo.Models
         public string Level { get; set; }
 
         public TimeSpan LimitTime { get; set; }
+
+        public List<TestQuestionResponse> TestQuestions { get; set; }
     }
 }
