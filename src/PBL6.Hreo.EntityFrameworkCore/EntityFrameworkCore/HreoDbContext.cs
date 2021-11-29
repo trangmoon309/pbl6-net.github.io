@@ -37,6 +37,7 @@ namespace PBL6.Hreo.EntityFrameworkCore
 
         public DbSet<UserResume> UserResumes { get; set; }
 
+        public DbSet<PostTest> PostTests { get; set; }
 
         public HreoDbContext(DbContextOptions<HreoDbContext> options) 
             : base(options)

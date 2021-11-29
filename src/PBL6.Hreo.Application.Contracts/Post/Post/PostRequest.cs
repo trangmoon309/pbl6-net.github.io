@@ -23,5 +23,7 @@ namespace PBL6.Hreo.Models
         public int DateRange { get; set; }
 
         public bool IsHidden { get; set; }
+
+        public List<Guid> TestIds { get; set; }
     }
 }

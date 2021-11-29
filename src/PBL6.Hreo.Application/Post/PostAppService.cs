@@ -24,12 +24,15 @@ namespace PBL6.Hreo.Services
     {
         private readonly IPostRepository _repository;
         private readonly IAsyncQueryableExecuter _asyncQueryableExecuter;
+        private readonly IPostTestRepository _postTestRepository;
 
         public PostAppService(IPostRepository repository,
-            IAsyncQueryableExecuter asyncQueryableExecuter) : base(repository)
+            IAsyncQueryableExecuter asyncQueryableExecuter, 
+            IPostTestRepository postTestRepository) : base(repository)
         {
             _repository = repository;
             _asyncQueryableExecuter = asyncQueryableExecuter;
+            _postTestRepository = postTestRepository;
         }
 
         public async Task<PagedResultDto<PostResponse>> GetListByCondittion(SearchPostRequest request, PagedAndSortedResultRequestDto pageRequest)
@@ -69,7 +72,23 @@ namespace PBL6.Hreo.Services
                 throw e;
             }
         }
-    
+
+        public override async Task<PostResponse> CreateAsync(PostRequest input)
+        {
+            var result = await base.CreateAsync(input);
+
+            foreach(var item in input.TestIds)
+            {
+                await _postTestRepository.InsertAsync(new PostTest
+                {
+                    PostId = result.Id,
+                    TestId = item
+                });
+            }
+
+            return result;
+        }
+
         public async Task<PostResponse> HiddenPost(Guid id)
         {
             try

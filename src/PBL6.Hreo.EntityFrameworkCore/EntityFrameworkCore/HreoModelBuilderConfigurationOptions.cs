@@ -12,7 +12,6 @@ namespace PBL6.Hreo.EntityFrameworkCore
                 tablePrefix,
                 schema)
         {
-
         }
     }
 }

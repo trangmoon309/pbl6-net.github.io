@@ -40,5 +40,7 @@ namespace PBL6.Hreo.EntityFrameworkCore
         public DbSet<NotificationUser> NotificationUsers { get; set; }
 
         public DbSet<UserResume> UserResumes { get; set; }
+
+        public DbSet<PostTest> PostTests { get; set; }
     }
 }

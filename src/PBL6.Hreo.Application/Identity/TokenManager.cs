@@ -71,20 +71,10 @@ namespace Greenglobal.Erp
 
         public ClaimsPrincipal VerifyToken(string accessToken)
         {
-            var claims = _tokenHandler.ValidateToken(accessToken.Replace("Bearer ", ""),
-                new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(_secretKey),
-                    ValidateLifetime = true,
-                    ValidateAudience = false,
-                    ValidateIssuer = false,
-                    ClockSkew = TimeSpan.Zero
-                }, out SecurityToken validatedToken);
+            var token = new JwtSecurityTokenHandler().ReadJwtToken(accessToken.Replace("Bearer ", string.Empty));
+            var identity = new ClaimsPrincipal(new ClaimsIdentity(token.Claims));
 
-            _currentPrincipalAccessor.Change(claims);
-
-            return claims;
+            return identity;
         }
 
         private IEnumerable<Claim> CreateClaims(User user)
