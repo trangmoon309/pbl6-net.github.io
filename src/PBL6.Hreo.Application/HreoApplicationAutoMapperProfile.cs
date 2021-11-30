@@ -102,6 +102,9 @@ namespace PBL6.Hreo
                  .ForMember(x => x.Roles, y => y.Ignore());
 
             CreateMap<IdentityRole, RoleResponse>(MemberList.None);
+
+
+            CreateMap<PostTest, PostTestResponse>(MemberList.None);
         }
     }
 }

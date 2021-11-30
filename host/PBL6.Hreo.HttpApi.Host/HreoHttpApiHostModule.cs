@@ -130,7 +130,7 @@ namespace PBL6.Hreo
                 options.KeyPrefix = "Hreo:";
             });
 
-/*            if (!hostingEnvironment.IsDevelopment())
+            /*if (!hostingEnvironment.IsDevelopment())
             {
                 var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]);
                 context.Services

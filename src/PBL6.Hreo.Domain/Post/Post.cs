@@ -29,5 +29,7 @@ namespace PBL6.Hreo.Entities
         public List<ApplicantPost> ApplicantPosts { get; set; }
 
         public List<InterestedPost> InterestedPosts { get; set; }
+
+        public List<PostTest> PostTests { get; set; }
     }
 }

@@ -31,5 +31,11 @@ namespace PBL6.Hreo.Repository
                 .FirstOrDefaultAsync();
             return query;
         }
+
+        public void DeleteByPostId(Guid postId)
+        {
+            var query = GetQueryable().Where(x => !x.IsDeleted && x.PostId.Equals(postId));
+            DbContext.PostTests.RemoveRange(query);
+        }
     }
 }

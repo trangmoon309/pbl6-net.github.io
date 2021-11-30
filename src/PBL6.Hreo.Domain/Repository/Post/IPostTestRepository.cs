@@ -13,5 +13,7 @@ namespace PBL6.Hreo.Repository
         IQueryable<PostTest> GetList();
 
         Task<PostTest> GetById(Guid id);
+
+        void DeleteByPostId(Guid postId);
     }
 }

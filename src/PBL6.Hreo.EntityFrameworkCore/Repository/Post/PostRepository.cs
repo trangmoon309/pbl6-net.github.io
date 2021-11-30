@@ -21,7 +21,8 @@ namespace PBL6.Hreo.Repository
             return GetQueryable().Where(x => !x.IsDeleted)
                 .Include(x => x.InvitationPosts)
                 .Include(x => x.InterestedPosts)
-                .Include(x => x.ApplicantPosts);
+                .Include(x => x.ApplicantPosts)
+                .Include(x => x.PostTests).ThenInclude(y => y.Test);
         }
 
         public async Task<Post> GetById(Guid id)
@@ -30,6 +31,7 @@ namespace PBL6.Hreo.Repository
                  .Include(x => x.InvitationPosts)
                 .Include(x => x.InterestedPosts)
                 .Include(x => x.ApplicantPosts)
+                .Include(x => x.PostTests).ThenInclude(y => y.Test)
                 .FirstOrDefaultAsync();
             return query;
         }
