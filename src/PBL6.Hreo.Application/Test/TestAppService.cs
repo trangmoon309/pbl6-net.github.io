@@ -15,6 +15,7 @@ using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Linq;
+using Volo.Abp.Users;
 
 namespace PBL6.Hreo.Services
 {
@@ -30,14 +31,17 @@ namespace PBL6.Hreo.Services
         private readonly ITestRepository _repository;
         private readonly IAsyncQueryableExecuter _asyncQueryableExecuter;
         private readonly ITestQuestionRepository _questionRepository;
+        private readonly ICurrentUser _currentUser;
 
         public TestAppService(ITestRepository repository,
-            IAsyncQueryableExecuter asyncQueryableExecuter, 
-            ITestQuestionRepository questionRepository) : base(repository)
+            IAsyncQueryableExecuter asyncQueryableExecuter,
+            ITestQuestionRepository questionRepository, 
+            ICurrentUser currentUser) : base(repository)
         {
             _repository = repository;
             _asyncQueryableExecuter = asyncQueryableExecuter;
             _questionRepository = questionRepository;
+            _currentUser = currentUser;
         }
 
         public override async Task<PagedResultDto<TestResponse>> GetListAsync(PagedAndSortedResultRequestDto input)
@@ -90,6 +94,7 @@ namespace PBL6.Hreo.Services
         {
             var createdTest = ObjectMapper.Map<TestWithQuestionRequest, Test>(input);
             EntityHelper.TrySetId(createdTest, GuidGenerator.Create);
+            createdTest.CreatorId = _currentUser.Id;
 
             var testQuestionResponses = new List<TestQuestionResponse>();
             foreach(var item in createdTest.TestQuestions)
