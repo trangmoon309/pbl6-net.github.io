@@ -90,19 +90,18 @@ namespace PBL6.Hreo.Services
         {
             var createdTest = ObjectMapper.Map<TestWithQuestionRequest, Test>(input);
             EntityHelper.TrySetId(createdTest, GuidGenerator.Create);
-            await _repository.InsertAsync(createdTest);
 
             var testQuestionResponses = new List<TestQuestionResponse>();
-            foreach(var item in input.TestQuestions)
+            foreach(var item in createdTest.TestQuestions)
             {
-                var createdQuestion = ObjectMapper.Map<TestQuestionRequest, TestQuestion>(item);
-                EntityHelper.TrySetId(createdQuestion, GuidGenerator.Create);
-                createdQuestion.TestId = createdTest.Id;
-                testQuestionResponses.Add(ObjectMapper.Map<TestQuestion, TestQuestionResponse>(createdQuestion));
+                EntityHelper.TrySetId(item, GuidGenerator.Create);
+                item.TestId = createdTest.Id;
+                testQuestionResponses.Add(ObjectMapper.Map<TestQuestion, TestQuestionResponse>(item));
             }
+            await _repository.InsertAsync(createdTest);
 
             var response = ObjectMapper.Map<Test, TestWithQuestionResponse>(createdTest);
-            response.TestQuestions = testQuestionResponses;
+            response.TestQuestions = testQuestionResponses.OrderBy(x => x.OrderIndex).ToList();
 
             return response;
         }
