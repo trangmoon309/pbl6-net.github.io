@@ -51,13 +51,12 @@ namespace PBL6.Hreo.Services
         {
             try
             {
-                var userInfors = _userInforRepository.GetList();
-                var x = await _asyncQueryableExecuter.ToListAsync(userInfors);
                 var post = await _postRepository.GetById(postId);
+                var userInfors = _userInforRepository.GetList().Where(x => x.Language.Equals(post.Language)
+                                  && x.Level.Equals(post.Level));
+                var x = await _asyncQueryableExecuter.ToListAsync(userInfors);
 
-                var userIds = userInfors.Where(x => x.Language.Equals(post.Language)
-                                                  && x.Level.Equals(post.Level))
-                                        .Select(x => x.Id);
+                var userIds = userInfors.Select(x => x.Id);
 
                 var userIdList = await _asyncQueryableExecuter.ToListAsync(userIds);
 
