@@ -70,7 +70,7 @@ namespace PBL6.Hreo.Services
 
         public async Task<IEnumerable<string>> ListBlobsAsync()
         {
-            var containerClient = _blobServiceClient.GetBlobContainerClient("public-uploading");
+            var containerClient = _blobServiceClient.GetBlobContainerClient("contain1");
             var items = new List<string>();
 
             await foreach (var blobItem in containerClient.GetBlobsAsync())
@@ -99,7 +99,7 @@ namespace PBL6.Hreo.Services
             await this.CreateAsync(entity);
 
             // Insert to BLOB
-            var containerClient = _blobServiceClient.GetBlobContainerClient("public-uploading");
+            var containerClient = _blobServiceClient.GetBlobContainerClient("contain1");
             var blobClient = containerClient.GetBlobClient(fileName);
             var httpHeaders = new BlobHttpHeaders()
             {
