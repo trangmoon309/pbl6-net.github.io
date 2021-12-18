@@ -30,13 +30,17 @@ namespace PBL6.Hreo.Services
         private readonly IUserInformationRepository _userInforRepository;
         private readonly IUserInformationAppService _userInforAppService;
         private readonly IUserRepository _userRepository;
+        private readonly INotificationUserAppService _notification;
+        private readonly IDeviceRepository _device;
 
         public InvitationPostAppService(IInvitationPostRepository repository,
             IAsyncQueryableExecuter asyncQueryableExecuter,
             IPostRepository postRepository,
             IUserInformationRepository userInforRepository,
-            IUserInformationAppService userInforAppService, 
-            IUserRepository userRepository) : base(repository)
+            IUserInformationAppService userInforAppService,
+            IUserRepository userRepository,
+            INotificationUserAppService notification, 
+            IDeviceRepository device) : base(repository)
         {
             _repository = repository;
             _asyncQueryableExecuter = asyncQueryableExecuter;
@@ -44,6 +48,8 @@ namespace PBL6.Hreo.Services
             _userInforRepository = userInforRepository;
             _userInforAppService = userInforAppService;
             _userRepository = userRepository;
+            _notification = notification;
+            _device = device;
         }
 
         // Xem danh sách thí sinh đủ điều kiện của bài post để HR xem và mời
@@ -111,13 +117,19 @@ namespace PBL6.Hreo.Services
 
                 var toList = await _asyncQueryableExecuter.ToListAsync(query);
                 var result = ObjectMapper.Map<List<InvitationPost>, List<InvitationPostResponse>>(toList);
-
-                var userAbp = await _asyncQueryableExecuter.FirstOrDefaultAsync(_userRepository.GetById(result.FirstOrDefault().Applicant.UserId));
-                var userAbpResponse = ObjectMapper.Map<User, UserResponse>(userAbp);
+                var applicant = await _userInforAppService.GetByUserInforId(applicantId);
 
                 result.ForEach(x =>
                 {
-                    x.Applicant.UserAbp = userAbpResponse;
+                    if(x.Applicant == null)
+                    {
+                        x.Applicant = new UserInformationResponse();
+                        x.Applicant = applicant;
+                    }
+                    else
+                    {
+                        x.Applicant.UserAbp = applicant.UserAbp;
+                    }
                 });
 
                 return result;
@@ -140,6 +152,7 @@ namespace PBL6.Hreo.Services
                 var userAbp = await _userRepository.GetList();
                 var userAbpList = await _asyncQueryableExecuter.ToListAsync(userAbp);
                 var userAbpResponse = ObjectMapper.Map<List<User>, List<UserResponse>>(userAbpList);
+                var devices = await _device.GetListAsync();
 
                 entities.ForEach(x => {
                     EntityHelper.TrySetId(x, GuidGenerator.Create);
@@ -153,12 +166,30 @@ namespace PBL6.Hreo.Services
                 var post = await _postRepository.GetById(request.First().PostId);
                 var userInfors = _userInforRepository.GetList().ToList();
 
+                var notificationUsers = new List<PushNotificationRequest>();
                 responses.ForEach(x =>
                 {
                     x.Post = ObjectMapper.Map<Post, PostResponse>(post);
                     x.Applicant = ObjectMapper.Map<UserInformation, UserInformationResponse>(userInfors.FirstOrDefault(y => y.Id.Equals(x.ApplicantId)));
                     x.Applicant.UserAbp = userAbpResponse.FirstOrDefault(y => y.Id.Equals(x.Applicant.UserId));
+                    var deviceUser = devices.FirstOrDefault(y => y.UserId == x.Applicant.UserId);
+
+                    if (deviceUser != null)
+                    {
+                        notificationUsers.Add(new PushNotificationRequest
+                        {
+                            to = deviceUser.DeviceToken,
+                            title = "Bạn có lời mời ứng tuyển mới, xem thử nhé!!",
+                            subtitle = x.Post.Language + "-" + x.Post.Level,
+                            body = x.Post.Title.Substring(0, 20) + "..."
+                        });
+                    }
                 });
+
+                if (notificationUsers.Any())
+                {
+                    await _notification.SendNotification(notificationUsers);
+                }
 
                 return responses;
             }

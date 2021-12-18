@@ -44,6 +44,14 @@ namespace PBL6.Hreo.Controllers
             return Ok(createdTest);
         }
 
+        [HttpPost]
+        [Route("send-notification")]
+        public async Task<IActionResult> SendAsync([FromBody] List<PushNotificationRequest> request)
+        {
+            var x = await _service.SendNotification(request);
+            return Ok(x);
+        }
+
         [HttpPut]
         public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] NotificationUserRequest request)
         {

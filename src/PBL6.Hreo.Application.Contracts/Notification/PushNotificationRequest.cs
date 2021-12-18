@@ -6,12 +6,12 @@ namespace PBL6.Hreo.Models
 {
     public class PushNotificationRequest
     {
-        public string To { get; set; }
+        public string to { get; set; }
 
-        public string Title { get; set; }
+        public string title { get; set; }
 
-        public string Subtitle { get; set; }
+        public string subtitle { get; set; }
 
-        public string Body { get; set; }
+        public string body { get; set; }
     }
 }

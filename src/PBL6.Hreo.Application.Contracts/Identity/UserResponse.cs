@@ -24,5 +24,10 @@ namespace PBL6.Hreo.Models
         public string RoleCode { get; set; }
 
         public Guid? RoleId { get; set; }
+
+        public UserResponse()
+        {
+            Roles = new List<RoleResponse>();
+        }
     }
 }

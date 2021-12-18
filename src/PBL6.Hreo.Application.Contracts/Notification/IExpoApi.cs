@@ -9,7 +9,7 @@ namespace PBL6.Hreo.Services
 {
     public interface IExpoApi
     {
-        [Post("/users/{user}")]
+        [Post("https://api.expo.dev/v2/push/send")]
         Task<PushNotificationResponse> PushNotification(List<PushNotificationRequest> request);
     }
 }

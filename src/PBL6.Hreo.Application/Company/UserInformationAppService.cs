@@ -31,18 +31,21 @@ namespace PBL6.Hreo.Services
         private readonly ICurrentUser _currentUser;
         protected IdentityUserManager UserManager { get; }
         protected IIdentityUserRepository _userRepository { get; }
+        protected IdentityRoleManager RoleManager { get; }
 
         public UserInformationAppService(IUserInformationRepository repository,
             IAsyncQueryableExecuter asyncQueryableExecuter,
             ICurrentUser currentUser,
-            IdentityUserManager userManager, 
-            IIdentityUserRepository userRepository) : base(repository)
+            IdentityUserManager userManager,
+            IIdentityUserRepository userRepository, 
+            IdentityRoleManager roleManager) : base(repository)
         {
             _repository = repository;
             _asyncQueryableExecuter = asyncQueryableExecuter;
             _currentUser = currentUser;
             UserManager = userManager;
             _userRepository = userRepository;
+            RoleManager = roleManager;
         }
 
         public override async Task<PagedResultDto<UserInformationResponse>> GetListAsync(PagedAndSortedResultRequestDto input)
@@ -105,11 +108,13 @@ namespace PBL6.Hreo.Services
             {
                 var userInformation = await _repository.GetByUserId(userId);
 
+                if(userInformation == null) userInformation = await _repository.GetById(userId);
+
                 var response = new UserInformationResponse();
 
                 if (userInformation != null)
                 {
-                    var user = await UserManager.GetByIdAsync(userId);
+                    var user = await UserManager.GetByIdAsync(userInformation.UserId);
                     var userAbpResponse = ObjectMapper.Map<IdentityUser, UserResponse>(user);
 
                     if (userInformation != null)
@@ -145,6 +150,17 @@ namespace PBL6.Hreo.Services
                     if (user != null)
                     {
                         var userAbpResponse = ObjectMapper.Map<IdentityUser, UserResponse>(user);
+                        var roleIds = user.Roles.Select(x => x.RoleId).ToList();
+
+                        if (roleIds.Any())
+                        {
+                            roleIds.ForEach(x =>
+                            {
+                                var role = RoleManager.GetByIdAsync(x).Result;
+                                userAbpResponse.Roles.Add(ObjectMapper.Map<IdentityRole, RoleResponse>(role));
+                                userAbpResponse.Role = role.Name;
+                            });
+                        }
 
                         var userInformation = await _repository.GetByUserId(_currentUser.Id.Value);
 

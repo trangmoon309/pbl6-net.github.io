@@ -65,6 +65,7 @@ namespace PBL6.Hreo
 
             CreateMap<Role, RoleResponse>(MemberList.None);
             CreateMap<RoleRequest, Role>(MemberList.None);
+            CreateMap<IdentityRole, RoleResponse>(MemberList.None);
 
 
             CreateMap<Company, CompanyResponse>(MemberList.None);

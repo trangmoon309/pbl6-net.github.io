@@ -13,5 +13,7 @@ namespace PBL6.Hreo.Repository
         IQueryable<UserInformation> GetList();
 
         Task<UserInformation> GetByUserId(Guid userId);
+
+        Task<UserInformation> GetById(Guid userId);
     }
 }

@@ -19,7 +19,8 @@ namespace PBL6.Hreo.Repository
         public IQueryable<InvitationPost> GetList()
         {
             return GetQueryable().Where(x => !x.IsDeleted)
-                .Include(x => x.Post);
+                .Include(x => x.Post)
+                .Include(x => x.Applicant);
         }
 
         public async Task<InvitationPost> GetById(Guid id)

@@ -27,5 +27,10 @@ namespace PBL6.Hreo.Repository
         {
             return await GetQueryable().Where(x => x.UserId.Equals(userId)).Include(x => x.Branch).ThenInclude(y => y.Company).FirstOrDefaultAsync();
         }
+
+        public async Task<UserInformation> GetById(Guid userId)
+        {
+            return await GetQueryable().Where(x => x.Id.Equals(userId)).Include(x => x.Branch).ThenInclude(y => y.Company).FirstOrDefaultAsync();
+        }
     }
 }
