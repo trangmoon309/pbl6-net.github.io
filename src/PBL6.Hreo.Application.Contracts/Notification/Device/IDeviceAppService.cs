@@ -15,5 +15,6 @@ namespace PBL6.Hreo.Services
                 DeviceRequest,
                 DeviceRequest>
     {
+        Task SeedDevice(string deviceToken);
     }
 }

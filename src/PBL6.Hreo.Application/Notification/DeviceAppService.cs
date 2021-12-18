@@ -9,7 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Identity;
 using Volo.Abp.Linq;
 
 namespace PBL6.Hreo.Services
@@ -25,12 +27,15 @@ namespace PBL6.Hreo.Services
     {
         private readonly IDeviceRepository _repository;
         private readonly IAsyncQueryableExecuter _asyncQueryableExecuter;
+        protected IIdentityUserRepository _userRepository { get; }
 
         public DeviceAppService(IDeviceRepository repository,
-            IAsyncQueryableExecuter asyncQueryableExecuter) : base(repository)
+            IAsyncQueryableExecuter asyncQueryableExecuter, 
+            IIdentityUserRepository userRepository) : base(repository)
         {
             _repository = repository;
             _asyncQueryableExecuter = asyncQueryableExecuter;
+            _userRepository = userRepository;
         }
 
         public override async Task<DeviceResponse> CreateAsync(DeviceRequest input)
@@ -61,5 +66,39 @@ namespace PBL6.Hreo.Services
                 throw e;
             }
         }
+
+        public async Task SeedDevice(string deviceToken)
+        {
+            try
+            {
+                var users = await _userRepository.GetListAsync();
+                var userInfors = await _repository.GetListAsync();
+                var addedEntity = new List<Device>();
+
+                foreach (var item in users)
+                {
+                    if (userInfors.FirstOrDefault(x => x.UserId == item.Id) == null)
+                    {
+                        var createdUserInfor = new Device
+                        {
+                            UserId = item.Id,
+                            DeviceToken = deviceToken,
+                            DeviceType = "Iphone"
+                        };
+
+                        EntityHelper.TrySetId(createdUserInfor, GuidGenerator.Create);
+                        addedEntity.Add(createdUserInfor);
+                    }
+                }
+
+                await _repository.InsertManyAsync(addedEntity);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
     }
 }

@@ -14,4 +14,11 @@ namespace PBL6.Hreo.Models
 
         public string body { get; set; }
     }
+
+    public class SendEmailRequest
+    {
+        public string email { get; set; }
+
+        public string subject { get; set; }
+    }
 }

@@ -16,5 +16,7 @@ namespace PBL6.Hreo.Services
                 NotificationUserRequest>
     {
         Task<string> SendNotification(List<PushNotificationRequest> request);
+
+        Task<string> SendEmailNotification(string title);
     }
 }

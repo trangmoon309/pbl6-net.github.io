@@ -44,6 +44,15 @@ namespace PBL6.Hreo.Controllers
             return Ok(createdTest);
         }
 
+
+        [HttpPost]
+        [Route("seed-datas")]
+        public async Task<IActionResult> SeedAsync(string deviceToken)
+        {
+            await _service.SeedDevice(deviceToken);
+            return Ok();
+        }
+
         [HttpPut]
         public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] DeviceRequest request)
         {

@@ -66,5 +66,68 @@ namespace PBL6.Hreo.Services
                 throw;
             }
         }
+
+        public async Task<string> SendEmailNotification(string title)
+        {
+            try
+            {
+                //Converting the object to a json string. NOTE: Make sure the object doesn't contain circular references.
+                var listReceiver = new List<SendEmailRequest>();
+
+                listReceiver.Add(new SendEmailRequest
+                {
+                    subject = title,
+                    email = "huynhphuongtrang309@gmail.com"
+                });
+
+                listReceiver.Add(new SendEmailRequest
+                {
+                    subject = title,
+                    email = "khanhquynh133@gmail.com"
+                });
+
+                listReceiver.Add(new SendEmailRequest
+                {
+                    subject = title,
+                    email = "yua307@gmail.com"
+                });
+
+                listReceiver.Add(new SendEmailRequest
+                {
+                    subject = title,
+                    email = "nhatnguyen522000@gmail.comm"
+                });
+
+                foreach(var item in listReceiver)
+                {
+                    string json = JsonConvert.SerializeObject(item);
+
+                    //Needed to setup the body of the request
+                    StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    //The url to post to.
+                    var url = "https://pbl6nodejs.azurewebsites.net/api/mailing";
+                    var client = new HttpClient();
+
+                    //Pass in the full URL and the json string content
+                    var response = await client.PostAsync(url, data);
+
+                    //It would be better to make sure this request actually made it through
+                    string result = await response.Content.ReadAsStringAsync();
+
+                    //close out the client
+                    client.Dispose();
+                }
+                
+                return "Ok";
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
     }
 }

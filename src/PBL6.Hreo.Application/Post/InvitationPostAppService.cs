@@ -60,7 +60,6 @@ namespace PBL6.Hreo.Services
                 var post = await _postRepository.GetById(postId);
                 var userInfors = _userInforRepository.GetList().Where(x => x.Language.Equals(post.Language)
                                   && x.Level.Equals(post.Level));
-                var x = await _asyncQueryableExecuter.ToListAsync(userInfors);
 
                 var userIds = userInfors.Select(x => x.Id);
 
@@ -164,32 +163,44 @@ namespace PBL6.Hreo.Services
                 var responses = ObjectMapper.Map<List<InvitationPost>, List<InvitationPostResponse>>(entities);
 
                 var post = await _postRepository.GetById(request.First().PostId);
+                var postResponse = ObjectMapper.Map<Post, PostResponse>(post);
                 var userInfors = _userInforRepository.GetList().ToList();
+                var userInforResponse = ObjectMapper.Map<List<UserInformation>, List<UserInformationResponse>>(userInfors);
 
-                var notificationUsers = new List<PushNotificationRequest>();
+                  var notificationUsers = new List<PushNotificationRequest>();
+                var title = string.Empty;
+                var language = string.Empty;
+                var level = string.Empty;
                 responses.ForEach(x =>
                 {
-                    x.Post = ObjectMapper.Map<Post, PostResponse>(post);
-                    x.Applicant = ObjectMapper.Map<UserInformation, UserInformationResponse>(userInfors.FirstOrDefault(y => y.Id.Equals(x.ApplicantId)));
+                    x.Post = postResponse;
+                    x.Applicant = userInforResponse.FirstOrDefault(y => y.Id.Equals(x.ApplicantId));
                     x.Applicant.UserAbp = userAbpResponse.FirstOrDefault(y => y.Id.Equals(x.Applicant.UserId));
-                    var deviceUser = devices.FirstOrDefault(y => y.UserId == x.Applicant.UserId);
+
+                    if(title == string.Empty) title = x.Post.Title;
+                    if (language == string.Empty) language = x.Post.Language.ToString();
+                    if (level == string.Empty) level = x.Post.Level.ToString();
+                });
+
+                if (notificationUsers.Any())
+                {
+                    await _notification.SendNotification(notificationUsers);
+
+                    var deviceUser = devices.FirstOrDefault();
 
                     if (deviceUser != null)
                     {
                         notificationUsers.Add(new PushNotificationRequest
                         {
                             to = deviceUser.DeviceToken,
-                            title = "Bạn có lời mời ứng tuyển mới, xem thử nhé!!",
-                            subtitle = x.Post.Language + "-" + x.Post.Level,
-                            body = x.Post.Title.Substring(0, 20) + "..."
+                            title = "Bạn có lời mời ứng tuyển mới, hãy xem thử nhé!!",
+                            subtitle = language + "-" + level,
+                            body = title.Substring(0, 50) + "..."
                         });
                     }
-                });
-
-                if (notificationUsers.Any())
-                {
-                    await _notification.SendNotification(notificationUsers);
                 }
+
+                await _notification.SendEmailNotification(title);
 
                 return responses;
             }
