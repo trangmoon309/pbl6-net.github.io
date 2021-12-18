@@ -61,13 +61,13 @@ namespace PBL6.Hreo.Services
                 {
                     query = query.Where(x => x.Title.ToLower().Contains(request.KeyWord.ToLower()));
                 }
+                var total = items.Count();
 
                 query = query.Skip(pageRequest.SkipCount).Take(pageRequest.MaxResultCount);
 
                 var toList = await _asyncQueryableExecuter.ToListAsync(query);
 
                 var items = ObjectMapper.Map<List<Post>, List<PostResponse>>(toList);
-                var total = items.Count();
 
                 return new PagedResultDto<PostResponse>(total, items);
             }

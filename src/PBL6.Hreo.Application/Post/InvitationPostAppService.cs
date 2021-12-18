@@ -241,7 +241,7 @@ namespace PBL6.Hreo.Services
 
                 var responses = ObjectMapper.Map<List<InvitationPost>, List<InvitationPostResponse>>(entities);
 
-                var post = await _postRepository.GetById(request.First().PostId);
+                var post = await _postRepository.GetById(request.PostId);
                 var postResponse = ObjectMapper.Map<Post, PostResponse>(post);
                 var userInfors = _userInforRepository.GetList().ToList();
                 var userInforResponse = ObjectMapper.Map<List<UserInformation>, List<UserInformationResponse>>(userInfors);
