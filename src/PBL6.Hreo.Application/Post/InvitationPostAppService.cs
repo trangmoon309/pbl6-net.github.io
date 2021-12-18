@@ -261,23 +261,20 @@ namespace PBL6.Hreo.Services
                     if (level == string.Empty) level = x.Post.Level.ToString();
                 });
 
-                if (notificationUsers.Any())
+                var deviceUser = devices.FirstOrDefault();
+
+                if (deviceUser != null)
                 {
-                    await _notification.SendNotification(notificationUsers);
-
-                    var deviceUser = devices.FirstOrDefault();
-
-                    if (deviceUser != null)
+                    notificationUsers.Add(new PushNotificationRequest
                     {
-                        notificationUsers.Add(new PushNotificationRequest
-                        {
-                            to = deviceUser.DeviceToken,
-                            title = "Bạn có lời mời ứng tuyển mới, hãy xem thử nhé!!",
-                            subtitle = language + "-" + level,
-                            body = title.Substring(0, 50) + "..."
-                        });
-                    }
+                        to = deviceUser.DeviceToken,
+                        title = "Bạn có lời mời ứng tuyển mới, hãy xem thử nhé!!",
+                        subtitle = language + "-" + level,
+                        body = title.Substring(0, 50) + "..."
+                    });
                 }
+
+                await _notification.SendNotification(notificationUsers);
 
                 await _notification.SendEmailNotification(title);
 

@@ -61,7 +61,8 @@ namespace PBL6.Hreo.Services
                 {
                     query = query.Where(x => x.Title.ToLower().Contains(request.KeyWord.ToLower()));
                 }
-                var total = items.Count();
+
+                var total = query.Count();
 
                 query = query.Skip(pageRequest.SkipCount).Take(pageRequest.MaxResultCount);
 
