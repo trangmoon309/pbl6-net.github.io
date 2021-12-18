@@ -24,6 +24,8 @@ namespace PBL6.Hreo.Models
 
         public bool IsHidden { get; set; }
 
+        public UserInformationResponse Creator { get; set; }
+
         public List<PostTestResponse> PostTests { get; set; }
     }
 }

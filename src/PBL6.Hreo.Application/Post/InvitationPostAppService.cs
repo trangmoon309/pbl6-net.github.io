@@ -117,6 +117,8 @@ namespace PBL6.Hreo.Services
                 var toList = await _asyncQueryableExecuter.ToListAsync(query);
                 var result = ObjectMapper.Map<List<InvitationPost>, List<InvitationPostResponse>>(toList);
                 var applicant = await _userInforAppService.GetByUserInforId(applicantId);
+                var users = await _asyncQueryableExecuter.ToListAsync(_userInforRepository.GetList());
+                var userResponses = ObjectMapper.Map<List<UserInformation>, List<UserInformationResponse>>(users);
 
                 result.ForEach(x =>
                 {
@@ -129,6 +131,8 @@ namespace PBL6.Hreo.Services
                     {
                         x.Applicant.UserAbp = applicant.UserAbp;
                     }
+
+                    x.Post.Creator = userResponses.FirstOrDefault(y => y.Id.Equals(x.Post.CreatorId));
                 });
 
                 return result;
