@@ -13,5 +13,7 @@ namespace PBL6.Hreo.Repository
         IQueryable<Post> GetList();
 
         Task<Post> GetById(Guid id);
+
+        IQueryable<Post> SearchQueryable(IQueryable<Post> query, string keyWord);
     }
 }

@@ -214,6 +214,82 @@ namespace PBL6.Hreo.Services
             }
         }
 
+        public async Task<List<InvitationPostResponse>> CreateMultiple2(InvitationPostRequest2 request)
+        {
+            try
+            {
+                var userAbp = await _userRepository.GetList();
+                var userAbpList = await _asyncQueryableExecuter.ToListAsync(userAbp);
+                var userAbpResponse = ObjectMapper.Map<List<User>, List<UserResponse>>(userAbpList);
+                var devices = await _device.GetListAsync();
+
+                var entities = new List<InvitationPost>();
+                foreach (var item in request.ApplicantIds)
+                {
+                    var itemEntity = new InvitationPost()
+                    {
+                        ApplicantId = item,
+                        PostId = request.PostId,
+                        InvitationPostStatus = InvitationPostStatus.WAITING
+                    };
+                    EntityHelper.TrySetId(itemEntity, GuidGenerator.Create);
+
+                    entities.Add(itemEntity);
+                }
+
+                await _repository.CreateMultiple(entities);
+
+                var responses = ObjectMapper.Map<List<InvitationPost>, List<InvitationPostResponse>>(entities);
+
+                var post = await _postRepository.GetById(request.First().PostId);
+                var postResponse = ObjectMapper.Map<Post, PostResponse>(post);
+                var userInfors = _userInforRepository.GetList().ToList();
+                var userInforResponse = ObjectMapper.Map<List<UserInformation>, List<UserInformationResponse>>(userInfors);
+
+                var notificationUsers = new List<PushNotificationRequest>();
+                var title = string.Empty;
+                var language = string.Empty;
+                var level = string.Empty;
+                responses.ForEach(x =>
+                {
+                    x.Post = postResponse;
+                    x.Applicant = userInforResponse.FirstOrDefault(y => y.Id.Equals(x.ApplicantId));
+                    x.Applicant.UserAbp = userAbpResponse.FirstOrDefault(y => y.Id.Equals(x.Applicant.UserId));
+
+                    if (title == string.Empty) title = x.Post.Title;
+                    if (language == string.Empty) language = x.Post.Language.ToString();
+                    if (level == string.Empty) level = x.Post.Level.ToString();
+                });
+
+                if (notificationUsers.Any())
+                {
+                    await _notification.SendNotification(notificationUsers);
+
+                    var deviceUser = devices.FirstOrDefault();
+
+                    if (deviceUser != null)
+                    {
+                        notificationUsers.Add(new PushNotificationRequest
+                        {
+                            to = deviceUser.DeviceToken,
+                            title = "Bạn có lời mời ứng tuyển mới, hãy xem thử nhé!!",
+                            subtitle = language + "-" + level,
+                            body = title.Substring(0, 50) + "..."
+                        });
+                    }
+                }
+
+                await _notification.SendEmailNotification(title);
+
+                return responses;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
+
         public async Task<InvitationPostResponse> UpdateStatus(Guid id, InvitationPostStatus status)
         {
             try

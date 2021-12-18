@@ -35,5 +35,6 @@ namespace PBL6.Hreo.Repository
         {
             await DbContext.InvitationPosts.AddRangeAsync(invitationPosts);
         }
+
     }
 }

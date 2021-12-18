@@ -35,5 +35,12 @@ namespace PBL6.Hreo.Repository
                 .FirstOrDefaultAsync();
             return query;
         }
+
+        public IQueryable<Post> SearchQueryable(IQueryable<Post> query, string keyWord)
+        {
+            query = query.Where(x => (EF.Functions.Unaccent(x.Title.ToLower()).Contains(EF.Functions.Unaccent(keyWord.ToLower())))
+                                && !x.IsDeleted);
+            return query;
+        }
     }
 }

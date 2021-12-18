@@ -62,6 +62,15 @@ namespace PBL6.Hreo.Controllers
             return Ok(createdInvitation_Post);
         }
 
+
+        [HttpPost]
+        [Route("custom")]
+        public async Task<IActionResult> Create2Async([FromBody] InvitationPostRequest2 request)
+        {
+            var createdInvitation_Post = await _service.CreateMultiple2(request);
+            return Ok(createdInvitation_Post);
+        }
+
         [HttpPut]
         public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] InvitationPostRequest request)
         {

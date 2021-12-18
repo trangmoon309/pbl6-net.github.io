@@ -13,4 +13,11 @@ namespace PBL6.Hreo.Models
 
         public InvitationPostStatus InvitationPostStatus { get; set; }
     }
+
+    public class InvitationPostRequest2
+    {
+        public Guid PostId { get; set; }
+
+        public List<Guid> ApplicantIds { get; set; }
+    }
 }

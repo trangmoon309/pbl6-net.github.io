@@ -30,5 +30,13 @@ namespace PBL6.Hreo.Repository
             return GetQueryable().Where(x => !x.IsDeleted)
                 .Include(x => x.TestQuestions);
         }
+
+
+        public IQueryable<Test> SearchQueryable(IQueryable<Test> query, string keyWord)
+        {
+            query = query.Where(x => (EF.Functions.Unaccent(x.Title.ToLower()).Contains(EF.Functions.Unaccent(keyWord.ToLower())))
+                                && !x.IsDeleted);
+            return query;
+        }
     }
 }
