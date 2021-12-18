@@ -44,6 +44,15 @@ namespace PBL6.Hreo.Controllers
             return Ok(createdTest);
         }
 
+
+        [HttpPost]
+        [Route("seed-datas")]
+        public async Task<IActionResult> SeedAsync()
+        {
+            await _service.SeedBranchData();
+            return Ok();
+        }
+
         [HttpPut]
         public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] BranchRequest request)
         {

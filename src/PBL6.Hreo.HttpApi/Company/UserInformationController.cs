@@ -43,6 +43,21 @@ namespace PBL6.Hreo.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("seed-datas")]
+        public async Task<IActionResult> SeedAsync()
+        {
+            try
+            {
+                await _service.SeedUserInformationBaseOnUser();
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
         [HttpPut]
         public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] UserInformationRequest request)
         {

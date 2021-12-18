@@ -55,7 +55,7 @@ namespace PBL6.Hreo.Services
                 var interestPost = _interesPostRepository.GetByPostId(postId);
 
 
-                interestPost = interestPost.Where(x => x.InterestedPostStatus.ToString().Equals(InterestedPostStatus.SUBMITTED.ToString()));
+                interestPost = interestPost.Where(x => x.InterestedPostStatus == InterestedPostStatus.SUBMITTED);
 
                 if (request.Level.HasValue)
                 {

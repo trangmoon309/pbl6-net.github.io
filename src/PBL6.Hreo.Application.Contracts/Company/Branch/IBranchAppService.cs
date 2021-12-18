@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.DependencyInjection;
@@ -15,5 +16,6 @@ namespace PBL6.Hreo.Services
             BranchRequest,
             BranchRequest>
     {
+        Task SeedBranchData();
     }
 }

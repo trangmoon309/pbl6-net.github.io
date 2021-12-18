@@ -20,5 +20,7 @@ namespace PBL6.Hreo.Services
         Task<UserInformationResponse> GetCurrentUserInformation();
 
         Task<UserInformationResponse> GetByUserInforId(Guid userId);
+
+        Task SeedUserInformationBaseOnUser();
     }
 }

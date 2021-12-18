@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Identity;
 using Volo.Abp.Linq;
@@ -232,6 +233,46 @@ namespace PBL6.Hreo.Services
             catch (Exception e)
             {
                 throw e;
+            }
+        }
+
+        public async Task SeedUserInformationBaseOnUser()
+        {
+            try
+            {
+                var users = await _userRepository.GetListAsync();
+                var userInfors = await _repository.GetListAsync();
+                var addedEntity = new List<UserInformation>();
+
+                foreach(var item in users)
+                {
+                    if(userInfors.FirstOrDefault(x => x.UserId == item.Id) == null)
+                    {
+                        var createdUserInfor = new UserInformation
+                        {
+                            UserId = item.Id,
+                            AvatarId = Guid.Empty,
+                            CVId = Guid.Empty,
+                            BranchId = null,
+                            WorkAddress = "Đà Nẵng",
+                            GithubLink = "https://github.com/" + item.UserName,
+                            Language = Common.Enum.Enum.Language.NET,
+                            Status = Common.Enum.Enum.UserStatus.READY,
+                            Major = Common.Enum.Enum.Major.CNPM,
+                            Level = Common.Enum.Enum.Level.FRESHER
+                        };
+
+                        EntityHelper.TrySetId(createdUserInfor, GuidGenerator.Create);
+                        addedEntity.Add(createdUserInfor);
+                    }
+                }
+
+                await _repository.InsertManyAsync(addedEntity);
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
     }
