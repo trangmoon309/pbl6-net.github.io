@@ -112,6 +112,19 @@ namespace PBL6.Hreo.EntityFrameworkCore
                 b.ToTable("PostTests", "post");
                 b.ConfigureByConvention();
             });
+
+
+            builder.Entity<ApplicantTest>(b =>
+            {
+                b.ToTable("ApplicantTests", "test");
+                b.ConfigureByConvention();
+            });
+
+            builder.Entity<ApplicantTestQuestion>(b =>
+            {
+                b.ToTable("ApplicantTestQuestions", "test");
+                b.ConfigureByConvention();
+            });
         }
     }
 }

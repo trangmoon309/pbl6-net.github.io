@@ -38,6 +38,23 @@ namespace PBL6.Hreo.Controllers
         }
 
         [HttpGet]
+        [Route("by-postId/{postId}")]
+        public async Task<IActionResult> GetByPostIdAsync(Guid postId)
+        {
+            var result = await _service.GetTestByPost(postId);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("get-submitted-assignment")]
+        public async Task<IActionResult> GetAssignmentByCondition(Guid applicantId, Guid postId)
+        {
+            var result = await _service.GetAssignmentByCondition(applicantId, postId);
+            return Ok(result);
+        }
+
+
+        [HttpGet]
         [Route("by-condition")]
         public async Task<IActionResult> GetListByConditionAsync(SearchTestRequest request, PagedAndSortedResultRequestDto pageRequest)
         {
@@ -65,6 +82,14 @@ namespace PBL6.Hreo.Controllers
         public IActionResult ImportQuestionAsync(IFormFile importExcelFile)
         {
             var createdTest = _service.ImportExcelForCreatingTest(importExcelFile);
+            return Ok(createdTest);
+        }
+
+        [HttpPost]
+        [Route("create-assignment")]
+        public async Task<IActionResult> CreateAssignment([FromBody] SendApplicantAssignmentRequest request)
+        {
+            var createdTest = await _service.MarkAssignment(request);
             return Ok(createdTest);
         }
 

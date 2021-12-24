@@ -36,6 +36,12 @@ namespace PBL6.Hreo
             CreateMap<TestQuestion, TestQuestionResponse>(MemberList.None);
             CreateMap<TestQuestionRequest, TestQuestion>(MemberList.None);
 
+            CreateMap<ApplicantTest, ApplicantTestResponse>(MemberList.None);
+            CreateMap<ApplicantTestRequest, ApplicantTest>(MemberList.None);
+
+            CreateMap<ApplicantTestQuestion, ApplicanTestQuestionResponse>(MemberList.None);
+            CreateMap<ApplicanTestQuestionRequest, ApplicantTestQuestion>(MemberList.None);
+
             CreateMap<Post, PostResponse>(MemberList.None)
                 .ForMember(x => x.Language, y => y.MapFrom(y => y.Language.ToString()))
                 .ForMember(x => x.Level, y => y.MapFrom(y => y.Level.ToString()))

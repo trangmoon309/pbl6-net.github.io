@@ -11,8 +11,6 @@ namespace PBL6.Hreo.Entities
     {
         public Guid PostId { get; set; }
 
-        public Guid TestId { get; set; }
-
         public Guid ApplicantId { get; set; }
 
         public ApplicantPostStatus ApplicantPostStatus { get; set; }
@@ -28,8 +26,6 @@ namespace PBL6.Hreo.Entities
         public float TimeFinished { get; set; }
 
         public Post Post { get; set; }
-
-        public Test Test { get; set; }
 
         [ForeignKey("ApplicationId")]
         public UserInformation UserInformation { get; set; }

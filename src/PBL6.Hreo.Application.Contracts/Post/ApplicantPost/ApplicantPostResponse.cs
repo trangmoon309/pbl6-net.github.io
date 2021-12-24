@@ -10,8 +10,6 @@ namespace PBL6.Hreo.Models
     {
         public PostResponse Post { get; set; }
 
-        public TestResponse Test { get; set; }
-
         public UserInformationResponse UserInformation { get; set; }
 
         public string ApplicantPostStatus { get; set; }

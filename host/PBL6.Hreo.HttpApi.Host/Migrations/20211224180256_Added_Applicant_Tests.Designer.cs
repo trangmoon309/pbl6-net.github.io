@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PBL6.Hreo.EntityFrameworkCore;
@@ -10,9 +11,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace PBL6.Hreo.Migrations
 {
     [DbContext(typeof(HreoHttpApiHostMigrationsDbContext))]
-    partial class HreoHttpApiHostMigrationsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211224180256_Added_Applicant_Tests")]
+    partial class Added_Applicant_Tests
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -208,7 +210,7 @@ namespace PBL6.Hreo.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("ApplicantTestId")
+                    b.Property<Guid>("ApplicantId")
                         .HasColumnType("uuid");
 
                     b.Property<int>("Choose")
@@ -222,12 +224,22 @@ namespace PBL6.Hreo.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("CreatorId");
 
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TestId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("TestQuestionId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicantTestId");
+                    b.HasIndex("ApplicantId");
+
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("TestId");
 
                     b.HasIndex("TestQuestionId");
 
@@ -1150,9 +1162,21 @@ namespace PBL6.Hreo.Migrations
 
             modelBuilder.Entity("PBL6.Hreo.Entities.ApplicantTestQuestion", b =>
                 {
-                    b.HasOne("PBL6.Hreo.Entities.ApplicantTest", "ApplicantTest")
+                    b.HasOne("PBL6.Hreo.Entities.UserInformation", "Applicant")
                         .WithMany()
-                        .HasForeignKey("ApplicantTestId")
+                        .HasForeignKey("ApplicantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PBL6.Hreo.Entities.Post", "Post")
+                        .WithMany()
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PBL6.Hreo.Entities.Test", "Test")
+                        .WithMany()
+                        .HasForeignKey("TestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1162,7 +1186,11 @@ namespace PBL6.Hreo.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ApplicantTest");
+                    b.Navigation("Applicant");
+
+                    b.Navigation("Post");
+
+                    b.Navigation("Test");
 
                     b.Navigation("TestQuestion");
                 });

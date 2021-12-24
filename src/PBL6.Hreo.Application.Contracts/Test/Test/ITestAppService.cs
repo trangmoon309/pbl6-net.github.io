@@ -23,5 +23,11 @@ namespace PBL6.Hreo.Services
         Task<TestWithQuestionResponse> UpdateWithQuestionsAsync(Guid id, TestWithQuestionRequest input);
 
         Task<PagedResultDto<TestResponse>> GetListByCondittion(SearchTestRequest request, PagedAndSortedResultRequestDto pageRequest);
+
+        Task<List<TestResponse>> GetTestByPost(Guid id);
+
+        Task<ApplicantTestResponse> MarkAssignment(SendApplicantAssignmentRequest request);
+
+        Task<ApplicantTestResponse> GetAssignmentByCondition(Guid applicantId, Guid postId);
     }
 }

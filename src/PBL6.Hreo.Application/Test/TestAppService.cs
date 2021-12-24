@@ -32,16 +32,23 @@ namespace PBL6.Hreo.Services
         private readonly IAsyncQueryableExecuter _asyncQueryableExecuter;
         private readonly ITestQuestionRepository _questionRepository;
         private readonly ICurrentUser _currentUser;
+        private readonly IPostRepository _postRepository;
+        private readonly IApplicantTestRepository _appTestRepository;
+        private readonly IApplicantTestQuestionRepository _appTestQuestionRepository;
 
         public TestAppService(ITestRepository repository,
             IAsyncQueryableExecuter asyncQueryableExecuter,
-            ITestQuestionRepository questionRepository, 
-            ICurrentUser currentUser) : base(repository)
+            ITestQuestionRepository questionRepository,
+            ICurrentUser currentUser, 
+            IApplicantTestRepository appTestRepository, 
+            IApplicantTestQuestionRepository appTestQuestionRepository) : base(repository)
         {
             _repository = repository;
             _asyncQueryableExecuter = asyncQueryableExecuter;
             _questionRepository = questionRepository;
             _currentUser = currentUser;
+            _appTestRepository = appTestRepository;
+            _appTestQuestionRepository = appTestQuestionRepository;
         }
 
         public override async Task<PagedResultDto<TestResponse>> GetListAsync(PagedAndSortedResultRequestDto input)
@@ -219,6 +226,87 @@ namespace PBL6.Hreo.Services
                     return 5;                              
                 default:
                     return 0;
+            }
+        }
+
+        // Làm bài test
+        public async Task<List<TestResponse>> GetTestByPost(Guid id)
+        {
+            try
+            {
+                var post = await _postRepository.GetById(id);
+                var tests =  post.PostTests.Select(x => x.Test).ToList();
+
+                return ObjectMapper.Map<List<Test>, List<TestResponse>>(tests);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<ApplicantTestResponse> MarkAssignment(SendApplicantAssignmentRequest request)
+        {
+            try
+            {
+                var test = await _repository.GetById(request.TestId);
+                var testQuestionsResponse = ObjectMapper.Map<Test, TestResponse>(test).TestQuestions;
+
+                var diem = 0;
+
+                var applicantTest = new ApplicantTest
+                {
+                    TestId = request.TestId,
+                    ApplicantId = request.ApplicantId,
+                    PostId = request.PostId,
+                };
+                EntityHelper.TrySetId(applicantTest, GuidGenerator.Create);
+
+                foreach (var item in request.TestAssignments)
+                {
+                    var question = testQuestionsResponse.FirstOrDefault(x => x.Id == item.TestQuestionId);
+
+                    if(question != null)
+                    {
+                        if (question.Result == item.Choose) ++diem;
+                    }
+
+                    var applicantTestQuestion = new ApplicantTestQuestion
+                    {
+                        ApplicantTestId = applicantTest.Id,
+                        TestQuestionId = item.TestQuestionId,
+                        Choose = item.Choose
+                    };
+                    EntityHelper.TrySetId(applicantTestQuestion, GuidGenerator.Create);
+
+                    applicantTest.ApplicantTestQuestions.Add(applicantTestQuestion);
+                }
+
+                applicantTest.Result = diem;
+                var result =  await _appTestRepository.InsertAsync(applicantTest);
+
+                return ObjectMapper.Map<ApplicantTest, ApplicantTestResponse>(result);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<ApplicantTestResponse> GetAssignmentByCondition(Guid applicantId, Guid postId)
+        {
+            try
+            {
+                var appTest = _appTestRepository.GetList().Where(x => x.ApplicantId == applicantId && x.PostId == postId);
+
+                var result = await _asyncQueryableExecuter.FirstOrDefaultAsync(appTest);
+
+                return ObjectMapper.Map<ApplicantTest, ApplicantTestResponse>(result);
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
     }

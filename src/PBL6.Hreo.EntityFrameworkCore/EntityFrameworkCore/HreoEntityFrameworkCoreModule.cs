@@ -33,6 +33,8 @@ namespace PBL6.Hreo.EntityFrameworkCore
 
                 options.AddRepository<Test, TestRepository>();
                 options.AddRepository<TestQuestion, TestQuestionRepository>();
+                options.AddRepository<ApplicantTest, ApplicantTestRepository>();
+                options.AddRepository<ApplicantTestQuestion, ApplicantTestQuestionRepository>();
 
                 options.AddRepository<Post, PostRepository>();
                 options.AddRepository<ApplicantPost, ApplicantPostRepository>();
