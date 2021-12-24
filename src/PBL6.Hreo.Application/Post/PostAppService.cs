@@ -27,16 +27,22 @@ namespace PBL6.Hreo.Services
         private readonly IAsyncQueryableExecuter _asyncQueryableExecuter;
         private readonly IPostTestRepository _postTestRepository;
         private readonly ICurrentUser _currentUser;
+        private readonly IUserInformationRepository _userInforRepository;
+        private readonly IInterestedPostRepository _interestedPostRepository;
 
         public PostAppService(IPostRepository repository,
             IAsyncQueryableExecuter asyncQueryableExecuter,
-            IPostTestRepository postTestRepository, 
-            ICurrentUser currentUser) : base(repository)
+            IPostTestRepository postTestRepository,
+            ICurrentUser currentUser,
+            IUserInformationRepository userInforRepository, 
+            IInterestedPostRepository interestedPostRepository) : base(repository)
         {
             _repository = repository;
             _asyncQueryableExecuter = asyncQueryableExecuter;
             _postTestRepository = postTestRepository;
             _currentUser = currentUser;
+            _userInforRepository = userInforRepository;
+            _interestedPostRepository = interestedPostRepository;
         }
 
         public async Task<PagedResultDto<PostResponse>> GetListByCondittion(SearchPostRequest request, PagedAndSortedResultRequestDto pageRequest)
@@ -44,6 +50,9 @@ namespace PBL6.Hreo.Services
             try
             {
                 var query = _repository.GetList();
+                var userInformations = await _asyncQueryableExecuter.ToListAsync(_userInforRepository.GetList());
+                var userInformationResponses = ObjectMapper.Map<List<UserInformation>, List<UserInformationResponse>>(userInformations);
+                var interestedPost = new List<InterestedPost>();
 
                 query = query.OrderByDescending(x => x.CreationTime);
 
@@ -69,6 +78,25 @@ namespace PBL6.Hreo.Services
                 var toList = await _asyncQueryableExecuter.ToListAsync(query);
 
                 var items = ObjectMapper.Map<List<Post>, List<PostResponse>>(toList);
+
+                if (request.ApplicantId.HasValue)
+                {
+                    interestedPost = await _asyncQueryableExecuter.ToListAsync(_interestedPostRepository.GetList());
+                    interestedPost = interestedPost.Where(x => x.ApplicantId == request.ApplicantId.Value).ToList();
+                }
+
+                items.ForEach(x =>
+                {
+                    if (x.CreatorId != null)
+                    {
+                        x.Branch = userInformationResponses.FirstOrDefault(y => y.Id == x.CreatorId).Branch;
+                    }
+
+                    if (request.ApplicantId.HasValue)
+                    {
+                        x.IsFavorite = interestedPost.FirstOrDefault(y => y.PostId == x.Id) != null ? true : false;
+                    }
+                });
 
                 return new PagedResultDto<PostResponse>(total, items);
             }

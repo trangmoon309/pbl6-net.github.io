@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using PBL6.Hreo.Entities;
+using PBL6.Hreo.File;
 using PBL6.Hreo.Models;
 using PBL6.Hreo.Repository;
 using Volo.Abp;
@@ -42,6 +43,8 @@ namespace PBL6.Hreo.Services
         protected IdentityUserManager UserManager { get; }
         protected IdentityRoleManager RoleManager { get; }
         protected IIdentityRoleRepository _roleRepository { get; }
+        private readonly IUserInformationRepository _userInformrepository;
+        private readonly IFileAppService _fileAppService;
 
 
         public UserAppService(
@@ -53,7 +56,9 @@ namespace PBL6.Hreo.Services
             IConfiguration config,
             IdentityUserManager userManager,
             IdentityRoleManager roleManager,
-            IIdentityRoleRepository roleRepository) : base(repository)
+            IIdentityRoleRepository roleRepository,
+            IUserInformationRepository userInformrepository, 
+            IFileAppService fileAppService) : base(repository)
         {
             _currentUser = currentUser;
             _repository = repository;
@@ -64,6 +69,8 @@ namespace PBL6.Hreo.Services
             UserManager = userManager;
             RoleManager = roleManager;
             _roleRepository = roleRepository;
+            _userInformrepository = userInformrepository;
+            _fileAppService = fileAppService;
         }
 
         public async Task<UserResponse> GetCurrentUser()
@@ -96,6 +103,7 @@ namespace PBL6.Hreo.Services
                 using (_dataFilter.Disable<ISoftDelete>())
                 {
                     var query = await _repository.GetList();
+                    var userInfors = await _asyncQueryableExecuter.ToListAsync(_userInformrepository.GetList());
 
                     if (!string.IsNullOrEmpty(searchRequest.KeyWord))
                     {
@@ -110,6 +118,12 @@ namespace PBL6.Hreo.Services
 
                     var listUser = await _asyncQueryableExecuter.ToListAsync(query);
                     var items = ObjectMapper.Map<List<User>, List<UserResponse>>(listUser.Skip(pageRequest.SkipCount).Take(pageRequest.MaxResultCount).ToList());
+                    items.ForEach(x =>
+                    {
+                        var inform = userInfors.FirstOrDefault(y => y.UserId == x.Id);
+                        if (inform != null) x.AvatarUrl = _fileAppService.GetAsync(inform.AvatarId).Result.Url;
+                    });
+                    
                     var total = listUser.Count();
 
                     return new PagedResultDto<UserResponse>(total, items);

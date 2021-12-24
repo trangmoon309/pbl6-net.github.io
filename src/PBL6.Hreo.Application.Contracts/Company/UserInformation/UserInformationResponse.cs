@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PBL6.Hreo.File;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Volo.Abp.Application.Dtos;
@@ -35,5 +36,6 @@ namespace PBL6.Hreo.Models
 
         public BranchResponse Branch { get; set; }
 
+        public FileInformationResponse Avatar { get; set; }
     }
 }

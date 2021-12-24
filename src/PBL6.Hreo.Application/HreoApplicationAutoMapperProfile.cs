@@ -9,6 +9,7 @@ using PBL6.Hreo.Models;
 using PBL6.Hreo.Entities;
 using FileService;
 using Volo.Abp.Identity;
+using PBL6.Hreo.File;
 
 namespace PBL6.Hreo
 {
@@ -90,6 +91,7 @@ namespace PBL6.Hreo
             // File
             CreateMap<FileInformation, FileInformationModel>(MemberList.None);
             CreateMap<CreateUpdateFileInformationDto, FileInformation>(MemberList.None);
+            CreateMap<FileInformation, FileInformationResponse>(MemberList.None);
 
             CreateMap<Device, DeviceResponse>(MemberList.None);
             CreateMap<DeviceRequest, Device>(MemberList.None);
