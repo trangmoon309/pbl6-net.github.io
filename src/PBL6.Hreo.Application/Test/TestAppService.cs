@@ -39,9 +39,10 @@ namespace PBL6.Hreo.Services
         public TestAppService(ITestRepository repository,
             IAsyncQueryableExecuter asyncQueryableExecuter,
             ITestQuestionRepository questionRepository,
-            ICurrentUser currentUser, 
-            IApplicantTestRepository appTestRepository, 
-            IApplicantTestQuestionRepository appTestQuestionRepository) : base(repository)
+            ICurrentUser currentUser,
+            IApplicantTestRepository appTestRepository,
+            IApplicantTestQuestionRepository appTestQuestionRepository, 
+            IPostRepository postRepository) : base(repository)
         {
             _repository = repository;
             _asyncQueryableExecuter = asyncQueryableExecuter;
@@ -49,6 +50,7 @@ namespace PBL6.Hreo.Services
             _currentUser = currentUser;
             _appTestRepository = appTestRepository;
             _appTestQuestionRepository = appTestQuestionRepository;
+            _postRepository = postRepository;
         }
 
         public override async Task<PagedResultDto<TestResponse>> GetListAsync(PagedAndSortedResultRequestDto input)
@@ -241,7 +243,6 @@ namespace PBL6.Hreo.Services
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
