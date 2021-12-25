@@ -270,7 +270,7 @@ namespace PBL6.Hreo.Services
                         to = deviceUser.DeviceToken,
                         title = "Bạn có lời mời ứng tuyển mới, hãy xem thử nhé!!",
                         subtitle = language + "-" + level,
-                        body = title.Substring(0, 50) + "..."
+                        body =  title.Substring(0, title.Length/2) + "..."
                     });
                 }
 
@@ -285,7 +285,6 @@ namespace PBL6.Hreo.Services
                 throw exception;
             }
         }
-
 
         public async Task<InvitationPostResponse> UpdateStatus(Guid id, InvitationPostStatus status)
         {
