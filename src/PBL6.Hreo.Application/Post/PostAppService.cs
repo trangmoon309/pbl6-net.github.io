@@ -138,6 +138,8 @@ namespace PBL6.Hreo.Services
             _postTestRepository.DeleteByPostId(id);
             updatedPost.PostTests.Clear();
 
+            MapToEntity(input, updatedPost);
+
             var postTests = new List<PostTestResponse>();
             foreach (var item in input.TestIds)
             {
