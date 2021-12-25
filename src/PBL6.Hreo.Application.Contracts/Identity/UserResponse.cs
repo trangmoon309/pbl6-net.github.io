@@ -27,6 +27,8 @@ namespace PBL6.Hreo.Models
 
         public string AvatarUrl { get; set; }
 
+        public BranchResponse Branch { get; set; }
+
         public UserResponse()
         {
             Roles = new List<RoleResponse>();

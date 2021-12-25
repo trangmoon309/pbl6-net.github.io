@@ -121,7 +121,17 @@ namespace PBL6.Hreo.Services
                     items.ForEach(x =>
                     {
                         var inform = userInfors.FirstOrDefault(y => y.UserId == x.Id);
-                        if (inform != null) x.AvatarUrl = _fileAppService.GetAsync(inform.AvatarId).Result.Url;
+                        
+                        if (inform != null)
+                        {
+                            if (inform.AvatarId != Guid.Empty)
+                            {
+                                x.AvatarUrl = _fileAppService.GetAsync(inform.AvatarId).Result.Url;
+                            }
+
+                            x.Branch = ObjectMapper.Map<Branch, BranchResponse>(inform.Branch);
+                        }
+                    
                     });
                     
                     var total = listUser.Count();
