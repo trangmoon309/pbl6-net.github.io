@@ -262,6 +262,7 @@ namespace PBL6.Hreo.Services
                     ApplicantId = request.ApplicantId,
                     PostId = request.PostId,
                 };
+                applicantTest.ApplicantTestQuestions = new List<ApplicantTestQuestion>();
                 EntityHelper.TrySetId(applicantTest, GuidGenerator.Create);
 
                 foreach (var item in request.TestAssignments)
