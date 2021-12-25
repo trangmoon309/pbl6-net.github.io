@@ -89,7 +89,7 @@ namespace PBL6.Hreo.Services
                 {
                     if (x.CreatorId != null)
                     {
-                        x.Branch = userInformationResponses.FirstOrDefault(y => y.Id == x.CreatorId).Branch;
+                        x.Branch = userInformationResponses.FirstOrDefault(y => y.UserId == x.CreatorId).Branch;
                     }
 
                     if (request.ApplicantId.HasValue)
