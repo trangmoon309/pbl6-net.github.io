@@ -54,10 +54,11 @@ namespace PBL6.Hreo.Controllers
             return Ok(result);
         }
 
+
         [HttpPost]
-        public async Task<IActionResult> CreateAsync([FromBody] List<SendTestToApplicationRequest> request)
+        public async Task<IActionResult> Create2Async([FromBody] ApplicantPostRequest request)
         {
-            var createdApplicant_Post = await _service.CreateMultiple(request);
+            var createdApplicant_Post = await _service.CreateAsync(request);
             return Ok(createdApplicant_Post);
         }
 

@@ -29,13 +29,15 @@ namespace PBL6.Hreo.Services
         private readonly ICurrentUser _currentUser;
         private readonly IUserInformationRepository _userInforRepository;
         private readonly IInterestedPostRepository _interestedPostRepository;
+        private readonly IApplicantTestRepository _appTestRepository;
 
         public PostAppService(IPostRepository repository,
             IAsyncQueryableExecuter asyncQueryableExecuter,
             IPostTestRepository postTestRepository,
             ICurrentUser currentUser,
-            IUserInformationRepository userInforRepository, 
-            IInterestedPostRepository interestedPostRepository) : base(repository)
+            IUserInformationRepository userInforRepository,
+            IInterestedPostRepository interestedPostRepository, 
+            IApplicantTestRepository appTestRepository) : base(repository)
         {
             _repository = repository;
             _asyncQueryableExecuter = asyncQueryableExecuter;
@@ -43,6 +45,7 @@ namespace PBL6.Hreo.Services
             _currentUser = currentUser;
             _userInforRepository = userInforRepository;
             _interestedPostRepository = interestedPostRepository;
+            _appTestRepository = appTestRepository;
         }
 
         public async Task<PagedResultDto<PostResponse>> GetListByCondittion(SearchPostRequest request, PagedAndSortedResultRequestDto pageRequest)

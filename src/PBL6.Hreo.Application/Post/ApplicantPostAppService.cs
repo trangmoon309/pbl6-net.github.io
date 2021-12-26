@@ -30,13 +30,14 @@ namespace PBL6.Hreo.Services
         private readonly IUserInformationRepository _userInforRepository;
         private readonly IInterestedPostRepository _interesPostRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IApplicantTestRepository _appTestRepository;
 
         public ApplicantPostAppService(IApplicantPostRepository repository,
             IAsyncQueryableExecuter asyncQueryableExecuter,
             IPostRepository postRepository,
             IUserInformationRepository userInforRepository,
             IInterestedPostRepository interesPostRepository,
-            IUserRepository userRepository) : base(repository)
+            IUserRepository userRepository, IApplicantTestRepository appTestRepository) : base(repository)
         {
             _repository = repository;
             _asyncQueryableExecuter = asyncQueryableExecuter;
@@ -44,6 +45,7 @@ namespace PBL6.Hreo.Services
             _userInforRepository = userInforRepository;
             _interesPostRepository = interesPostRepository;
             _userRepository = userRepository;
+            _appTestRepository = appTestRepository;
         }
 
         // Danh sách ứng viên: Là những ứng viên đã submit CV của họ lên
@@ -53,7 +55,8 @@ namespace PBL6.Hreo.Services
             {
                 var userInfors = _userInforRepository.GetList();
                 var interestPost = _interesPostRepository.GetByPostId(postId);
-
+                var appTests = await _asyncQueryableExecuter.ToListAsync(_appTestRepository.GetList());
+                appTests = appTests.Where(x => x.PostId == postId).ToList();
 
                 interestPost = interestPost.Where(x => x.InterestedPostStatus == InterestedPostStatus.SUBMITTED);
 
@@ -78,6 +81,10 @@ namespace PBL6.Hreo.Services
                 result.ForEach(x =>
                 {
                     x.UserAbp = userAbpResponse.FirstOrDefault(y => y.Id.Equals(x.UserId));
+
+                    var test = appTests.FirstOrDefault(y => y.ApplicantId == x.Id);
+
+                    x.Result = test != null ? Convert.ToInt32(test.Result) : null;
                 });
 
                 result = result.Skip(pageRequest.SkipCount).Take(pageRequest.MaxResultCount).ToList();

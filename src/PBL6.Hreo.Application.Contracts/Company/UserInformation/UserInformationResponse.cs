@@ -31,6 +31,8 @@ namespace PBL6.Hreo.Models
 
         public Major Major { get; set; }
 
+        public int? Result { get; set; }
+
         // Dùng cho màn hình danh sách lời mời của HR
         public InvitationPostStatus IsInvitedForPost { get; set; }
 
