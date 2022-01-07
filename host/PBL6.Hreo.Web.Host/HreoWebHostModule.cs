@@ -201,13 +201,13 @@ namespace PBL6.Hreo
             IConfiguration configuration,
             IWebHostEnvironment hostingEnvironment)
         {
-            if (!hostingEnvironment.IsDevelopment())
+/*            if (!hostingEnvironment.IsDevelopment())
             {
                 var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]);
                 context.Services
                     .AddDataProtection()
                     .PersistKeysToStackExchangeRedis(redis, "Hreo-Protection-Keys");
-            }
+            }*/
         }
 
         public override void OnApplicationInitialization(ApplicationInitializationContext context)
