@@ -58,7 +58,6 @@ namespace PBL6.Hreo
         typeof(AbpAspNetCoreMvcClientModule),
         typeof(AbpAspNetCoreMvcUiBasicThemeModule),
         typeof(AbpAutofacModule),
-        typeof(AbpCachingStackExchangeRedisModule),
         typeof(AbpHttpClientIdentityModelWebModule),
         typeof(AbpIdentityWebModule),
         typeof(AbpIdentityHttpApiClientModule),
@@ -98,7 +97,6 @@ namespace PBL6.Hreo
             ConfigureVirtualFileSystem(hostingEnvironment);
             ConfigureSwaggerServices(context.Services);
             ConfigureMultiTenancy();
-            ConfigureRedis(context, configuration, hostingEnvironment);
         }
 
         private void ConfigureMenu(IConfiguration configuration)
@@ -195,21 +193,6 @@ namespace PBL6.Hreo
                 }
             );
         }
-
-        private void ConfigureRedis(
-            ServiceConfigurationContext context,
-            IConfiguration configuration,
-            IWebHostEnvironment hostingEnvironment)
-        {
-/*            if (!hostingEnvironment.IsDevelopment())
-            {
-                var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]);
-                context.Services
-                    .AddDataProtection()
-                    .PersistKeysToStackExchangeRedis(redis, "Hreo-Protection-Keys");
-            }*/
-        }
-
         public override void OnApplicationInitialization(ApplicationInitializationContext context)
         {
             var app = context.GetApplicationBuilder();
