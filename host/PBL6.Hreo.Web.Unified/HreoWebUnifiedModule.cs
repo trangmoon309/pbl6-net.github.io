@@ -75,7 +75,7 @@ namespace PBL6.Hreo
 
             Configure<AbpDbContextOptions>(options =>
             {
-                options.UseSqlServer();
+                //options.UseSqlServer();
             });
 
             if (hostingEnvironment.IsDevelopment())
